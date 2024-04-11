@@ -114,11 +114,18 @@ public class Login extends JFrame {
                         ps.setString(2, pwd);
                         rs = ps.executeQuery();
                         if (rs.next()) {
+                        	int et=rs.getInt("etat");
+                        if(et==1) {
                             Menu menu = new Menu();
                             menu.setVisible(true);
                             menu.setLocationRelativeTo(null);
                             dispose(); 
-                        } else {
+                        }else if(et==0) {
+                        	JOptionPane.showMessageDialog(null, "le compte est desactiver par administrateur","Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                        	
+                        }
+                        else {
                             JOptionPane.showMessageDialog(null, "No user exists with this username and password", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (Exception ex) {
