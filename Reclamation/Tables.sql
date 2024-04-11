@@ -35,5 +35,16 @@ VALUES
 (4, 'secteur social');
 
 
+/*Liste des réclamation */
+CREATE TABLE Reclamation (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(255),
+    type VARCHAR(255),
+    localisation VARCHAR(255),
+    date_creation DATE,
+    date_resolution DATE,
+    status VARCHAR(255),
+    CIN VARCHAR(255)
+);
 
 
