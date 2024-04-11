@@ -8,17 +8,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
+import java.awt.TextArea;
 
 public class Reclammation extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField textField;
-    private JTextField textField_1;
 
     public Reclammation() {
         setTitle("Reclammation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 700, 468);
+        setBounds(100, 100, 700, 530);
         contentPane = new JPanel();
         contentPane.setBackground(Color.WHITE);
         contentPane.setLayout(null);
@@ -69,9 +69,8 @@ public class Reclammation extends JFrame {
         comboBox.setBounds(324, 293, 148, 22);
         contentPane.add(comboBox);
         
-        textField_1 = new JTextField();
-        textField_1.setBounds(327, 342, 182, 78);
-        contentPane.add(textField_1);
-        textField_1.setColumns(10);
+        TextArea textArea = new TextArea();
+        textArea.setBounds(274, 331, 380, 160);
+        contentPane.add(textArea);
     }
 }
