@@ -22,10 +22,18 @@ CREATE TABLE recuperation (
 );
 
 
+CREATE TABLE secteur_rec (
+    idsec INT PRIMARY KEY,
+    secteur VARCHAR(40)
+);   
 
-CREATE TABLE Type_Reclamation (
-    idTypeRec INT PRIMARY KEY,
-    type_rec VARCHAR(40)
-);
+INSERT INTO secteur_rec (idsec, secteur)
+VALUES
+(1, 'secteur publique'),
+(2, 'secteur prive'),
+(3, 'secteur juridique'),
+(4, 'secteur social');
+
+
 
 
