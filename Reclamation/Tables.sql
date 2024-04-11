@@ -21,3 +21,11 @@ CREATE TABLE recuperation (
     PROVINCE VARCHAR(25)
 );
 
+
+
+CREATE TABLE Type_Reclamation (
+    idTypeRec INT PRIMARY KEY,
+    type_rec VARCHAR(40)
+);
+
+
