@@ -10,8 +10,8 @@ CREATE TABLE users (
     username VARCHAR2(39),
     pwd VARCHAR2(30),
     Ntel VARCHAR2(30),
-    role VARCHAR2(10), -- Changed from VARCHAR to VARCHAR2 for consistency
-    etat NUMBER(1)      -- Changed from int(1) to NUMBER(1); Oracle uses NUMBER
+    role VARCHAR2(10), -- rolde d'utilisateur admin ,gestionnaire,citoyen
+    etat NUMBER(1)      -- etat de compte active of desactive
 );
 
 
