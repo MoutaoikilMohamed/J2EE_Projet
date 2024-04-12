@@ -1,22 +1,19 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JTextPane;
-import java.awt.TextArea;
+import javax.swing.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Reclammation extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField textField;
-
+    private JComboBox<String> comboBox; 
+    private TextArea textArea; 
+    private JButton btn;
     public Reclammation() {
-        setTitle("Reclammation");
+        setTitle("Réclamation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 700, 530);
         contentPane = new JPanel();
@@ -24,13 +21,17 @@ public class Reclammation extends JFrame {
         contentPane.setLayout(null);
         setContentPane(contentPane);
         
-        JLabel lblNewLabel = new JLabel("");
-        lblNewLabel.setIcon(new ImageIcon(Reclammation.class.getResource("/image/back.PNG")));
+        initializeComponents();
+        loadSectorsFromDatabase(); 
+       
+    }
+
+    private void initializeComponents() {
+        JLabel lblNewLabel = new JLabel(new ImageIcon(Reclammation.class.getResource("/image/back.PNG")));
         lblNewLabel.setBounds(10, 11, 664, 89);
         contentPane.add(lblNewLabel);
         
-        JLabel lblNewLabel_1 = new JLabel("");
-        lblNewLabel_1.setIcon(new ImageIcon(Reclammation.class.getResource("/image/Citoyen.PNG")));
+        JLabel lblNewLabel_1 = new JLabel(new ImageIcon(Reclammation.class.getResource("/image/Citoyen.PNG")));
         lblNewLabel_1.setBounds(357, 111, 68, 59);
         contentPane.add(lblNewLabel_1);
         
@@ -39,38 +40,95 @@ public class Reclammation extends JFrame {
         lblNewLabel_2.setBounds(295, 186, 250, 30);
         contentPane.add(lblNewLabel_2);
         
-        JLabel lblNewLabel_1_1_1 = new JLabel("Remplissage de réclamation");
-        lblNewLabel_1_1_1.setForeground(new Color(0, 153, 0));
-        lblNewLabel_1_1_1.setFont(new Font("Trebuchet MS", Font.BOLD, 15));
-        lblNewLabel_1_1_1.setBounds(274, 222, 290, 20);
-        contentPane.add(lblNewLabel_1_1_1);
-        
         JLabel lblNewLabel_3 = new JLabel("Titre de réclamation");
         lblNewLabel_3.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
         lblNewLabel_3.setBounds(115, 272, 168, 14);
         contentPane.add(lblNewLabel_3);
-        
-        JLabel lblNewLabel_3_1 = new JLabel("Type de réclamation");
-        lblNewLabel_3_1.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        lblNewLabel_3_1.setBounds(115, 297, 168, 14);
-        contentPane.add(lblNewLabel_3_1);
-        
-        JLabel lblNewLabel_3_2 = new JLabel("Sujet réclamation");
-        lblNewLabel_3_2.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        lblNewLabel_3_2.setBounds(115, 342, 168, 14);
-        contentPane.add(lblNewLabel_3_2);
         
         textField = new JTextField();
         textField.setBounds(324, 270, 148, 20);
         contentPane.add(textField);
         textField.setColumns(10);
         
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{"Secteur publique", "secteur prive", "secteur juridique", "secteur social"});
+        JLabel lblNewLabel_4= new JLabel("Secteur de réclamation");
+        lblNewLabel_4.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
+        lblNewLabel_4.setBounds(115, 297, 168, 14);
+        contentPane.add(lblNewLabel_4);
+        
+        comboBox = new JComboBox<>(); // Initialized here
         comboBox.setBounds(324, 293, 148, 22);
         contentPane.add(comboBox);
         
-        TextArea textArea = new TextArea();
-        textArea.setBounds(274, 331, 380, 160);
+        JLabel lblNewLabel_5 = new JLabel("Sujet de réclamation");
+        lblNewLabel_5.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
+        lblNewLabel_5.setBounds(115, 322, 168, 14);
+        contentPane.add(lblNewLabel_5);
+        
+        textArea = new TextArea(); // Corrected to use the class-level variable
+        textArea.setBounds(274, 341, 380, 160);
         contentPane.add(textArea);
+        
+        
+        btn = new JButton("Envoyer");
+        btn.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
+        btn.setBounds(324, 510, 148, 25);  
+        contentPane.add(btn);
+        
+        btn.addActionListener(e -> insertReclamation());
+    }
+
+    private void loadSectorsFromDatabase() {
+        String query = "SELECT secteur FROM secteur_rec";
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                comboBox.addItem(rs.getString("secteur"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+    
+    private void insertReclamation() {
+        if (comboBox.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un secteur avant de soumettre.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String titre = textField.getText(); 
+        int idSec = comboBox.getSelectedIndex() + 1; 
+        String sujet = textArea.getText(); 
+        
+        String query = "INSERT INTO reclammation (titre_rec, date_rec, id_sec, sujet_rec) VALUES (?, NOW(), ?, ?)";
+        
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, titre);
+            pstmt.setInt(2, idSec);
+            pstmt.setString(3, sujet);
+            
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                JOptionPane.showMessageDialog(this, "Réclamation ajoutée avec succès !");
+            } else {
+                JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout de la réclamation.");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erreur de base de données : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                Reclammation frame = new Reclammation();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
