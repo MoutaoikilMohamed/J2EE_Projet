@@ -47,4 +47,3 @@ CREATE TABLE Reclamation (
     CIN VARCHAR(255)
 );
 
-
