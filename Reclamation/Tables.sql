@@ -8,6 +8,8 @@ USE projectjavaswing
 CREATE TABLE users (
     idusers VARCHAR2(10) PRIMARY KEY,
     username VARCHAR2(39),
+    nom VARCHAR2(39),
+    prenom VARCHAR2(39),
     pwd VARCHAR2(30),
     Ntel VARCHAR2(30),
     role VARCHAR2(10), -- rolde d'utilisateur admin ,gestionnaire,citoyen
