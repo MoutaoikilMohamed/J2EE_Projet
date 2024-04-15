@@ -78,7 +78,6 @@ public class Mes_Reclammation extends JFrame {
 	    String fetchCIN = "SELECT CIN FROM users WHERE username=?";
 	    String fetchReclamations = "SELECT titre_rec, id_sec, date_rec, Sujet_rec FROM reclammation WHERE CIN=?";
 	    String fetchSecteur = "SELECT secteur FROM secteur_rec WHERE idsec=?";
-hhamha
 	    try (Connection conn = ConnectionDB.getConnection();
 	         PreparedStatement pstmtCIN = conn.prepareStatement(fetchCIN)) {
 
