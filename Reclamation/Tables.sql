@@ -6,14 +6,15 @@ CREATE DATABASE projectjavaswing;
 USE projectjavaswing
 
 CREATE TABLE users (
-    idusers VARCHAR2(10) PRIMARY KEY,
-    username VARCHAR2(39),
-    nom VARCHAR2(39),
-    prenom VARCHAR2(39),
-    pwd VARCHAR2(30),
-    Ntel VARCHAR2(30),
-    role VARCHAR2(10), -- rolde d'utilisateur admin ,gestionnaire,citoyen
-    etat NUMBER(1)      -- etat de compte active of desactive
+    idusers VARCHAR(10) PRIMARY KEY,
+    username VARCHAR(39),
+    nom VARCHAR(39),
+    prenom VARCHAR(39),
+    pwd VARCHAR(30),
+    date_naissance varchar(20), --C'est mieu de la laisser Varchar
+    province varchar(20),
+    Ntel VARCHAR(30),
+    role VARCHAR(10)
 );
 
 
