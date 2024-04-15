@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
+import javax.swing.JButton;
 
 public class ListeGestionnaire extends JFrame {
 
@@ -90,26 +93,42 @@ public class ListeGestionnaire extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-					"CIN", "Nom", "Prénom", "Date de naissance", "Province"
+					"CIN", "Nom", "Prénom", "Date de naissance", "Province","Ntel"
 			}
 		));
+		
+		JButton btnNewButton = new JButton("Ajouter un Gestionneur");
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBackground(new Color(255, 128, 128));
+		btnNewButton.setFont(new Font("Sylfaen", Font.PLAIN, 13));
+		btnNewButton.setBounds(26, 217, 231, 31);
+		contentPane.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        AjouterGestionneur gestionnaireWindow = new AjouterGestionneur();
+		        
+		        gestionnaireWindow.setVisible(true);
+		    }
+		});
 		Connection conn = null;
 		try {
 		    conn = ConnectionDB.getConnection();
 
-		    String sql = "SELECT CIN, nom, prenom, date_de_naissance, province FROM UTILISATEUR WHERE Role ='Gestionnaire'";
+		    String sql = "SELECT idusers, nom, prenom, date_naissance, province, Ntel FROM USERS WHERE Role ='Gestionneur'";
 		    java.sql.Statement statement = conn.createStatement();
 		    ResultSet resultSet = statement.executeQuery(sql);
 
 		    DefaultTableModel model = (DefaultTableModel) table.getModel();
 
 		    while (resultSet.next()) {
-		        String cin = resultSet.getString("CIN");
+		        String cin = resultSet.getString("idusers");
 		        String nom = resultSet.getString("nom");
 		        String prenom = resultSet.getString("prenom");
-		        String dateNaissance = resultSet.getString("date_de_naissance");
+		        String dateNaissance = resultSet.getString("date_naissance");
 		        String province = resultSet.getString("province");
-		        model.addRow(new Object[]{cin, nom, prenom, dateNaissance, province});
+		        String NTel = resultSet.getString("Ntel");
+
+		        model.addRow(new Object[]{cin, nom, prenom, dateNaissance, province,NTel});
 		    }
 	
 		} catch (SQLException ex) {
