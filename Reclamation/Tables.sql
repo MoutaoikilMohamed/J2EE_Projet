@@ -45,7 +45,7 @@ CREATE TABLE Reclamation (
     localisation VARCHAR(255),
     date_creation DATE,
     date_resolution DATE,
-    status VARCHAR(255),
+    status VARCHAR(255), --En cours Refuse Accepte
     CIN VARCHAR(255)
 );
 
