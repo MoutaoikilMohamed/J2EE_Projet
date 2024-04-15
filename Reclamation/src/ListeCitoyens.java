@@ -6,8 +6,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -88,38 +92,37 @@ public class ListeCitoyens extends JFrame {
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 288, 823, 216);
+		scrollPane.setBounds(23, 273, 805, 228);
 		contentPane.add(scrollPane);
 		
-		table_2 = new JTable();
-		scrollPane.setViewportView(table_2);
-		table_2.setModel(new DefaultTableModel(
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"CIN", "Nom", "Prénom", "Date de naissance", "Province"
+					"CIN", "Nom", "Prénom", "Date de naissance", "Province","Ntel"
 			}
-			
-			
 		));
-		
 		Connection conn = null;
 		try {
 		    conn = ConnectionDB.getConnection();
 
-		    String sql = "SELECT CIN, nom, prenom, date_de_naissance, province FROM UTILISATEUR WHERE Role ='Citoyen'";
+		    String sql = "SELECT idusers, nom, prenom, date_naissance, province, Ntel FROM USERS WHERE Role ='Citoyen'";
 		    java.sql.Statement statement = conn.createStatement();
 		    ResultSet resultSet = statement.executeQuery(sql);
 
-		    DefaultTableModel model = (DefaultTableModel) table_2.getModel();
+		    DefaultTableModel model = (DefaultTableModel) table.getModel();
 
 		    while (resultSet.next()) {
-		        String cin = resultSet.getString("CIN");
+		        String cin = resultSet.getString("idusers");
 		        String nom = resultSet.getString("nom");
 		        String prenom = resultSet.getString("prenom");
-		        String dateNaissance = resultSet.getString("date_de_naissance");
+		        String dateNaissance = resultSet.getString("date_naissance");
 		        String province = resultSet.getString("province");
-		        model.addRow(new Object[]{cin, nom, prenom, dateNaissance, province});
+		        String NTel = resultSet.getString("Ntel");
+
+		        model.addRow(new Object[]{cin, nom, prenom, dateNaissance, province,NTel});
 		    }
 	
 		} catch (SQLException ex) {
@@ -127,5 +130,6 @@ public class ListeCitoyens extends JFrame {
 		} finally {
 		    ConnectionDB.closeConnection(conn);
 		}
+		
 	}
 }
