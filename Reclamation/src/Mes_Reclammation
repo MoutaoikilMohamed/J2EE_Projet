@@ -37,7 +37,7 @@ public class Mes_Reclammation extends JFrame {
 	
 
 	private void initialize() {
-        this.setBounds(100, 100, 700, 500);
+        this.setBounds(100, 100, 865, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Mes Réclamations");
 
@@ -47,16 +47,16 @@ public class Mes_Reclammation extends JFrame {
         this.setContentPane(contentPane);
 
         JLabel lblNewLabel = new JLabel(new ImageIcon(getClass().getResource("/image/back.PNG")));
-        lblNewLabel.setBounds(10, 11, 664, 89);
+        lblNewLabel.setBounds(10, 0, 839, 89);
         contentPane.add(lblNewLabel);
 
         JLabel lblNewLabel_1 = new JLabel(new ImageIcon(getClass().getResource("/image/Citoyen.PNG")));
-        lblNewLabel_1.setBounds(357, 111, 68, 59);
+        lblNewLabel_1.setBounds(420, 116, 68, 59);
         contentPane.add(lblNewLabel_1);
 
         JLabel lblNewLabel_2 = new JLabel("Espace Citoyen");
         lblNewLabel_2.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 22));
-        lblNewLabel_2.setBounds(295, 186, 250, 30);
+        lblNewLabel_2.setBounds(352, 186, 250, 30);
         contentPane.add(lblNewLabel_2);
 
         JLabel lblNewLabel_3 = new JLabel("Mes réclamations");
@@ -67,16 +67,16 @@ public class Mes_Reclammation extends JFrame {
         table = new JTable();
         table.setModel(new DefaultTableModel(
             new Object[][] {},
-            new String[] {"CIN", "Titre", "Adresse", "Secteur", "Date Création", "Status"}
+            new String[] {"CIN", "Titre","Secteur", "Date Création","Sujet de reclammation", "Status"}
         ));
         scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(20, 250, 660, 200);
+        scrollPane.setBounds(20, 250, 819, 200);
         contentPane.add(scrollPane);
     }
 
 	public void afficher_recl() {
 	    String fetchCIN = "SELECT CIN FROM users WHERE username=?";
-	    String fetchReclamations = "SELECT titre_rec, id_sec, date_rec, Sujet_rec FROM reclammation WHERE CIN=?";
+	    String fetchReclamations = "SELECT titre_rec, id_sec, date_rec, Sujet_rec,status FROM reclammation WHERE CIN=?";
 	    String fetchSecteur = "SELECT secteur FROM secteur_rec WHERE idsec=?";
 	    try (Connection conn = ConnectionDB.getConnection();
 	         PreparedStatement pstmtCIN = conn.prepareStatement(fetchCIN)) {
@@ -98,6 +98,7 @@ public class Mes_Reclammation extends JFrame {
 	                    Date date = rsRecl.getDate("date_rec");
 	                    String sujet = rsRecl.getString("Sujet_rec");
 	                    String secteur = "";
+	                    String status=rsRecl.getString("status");
 
 	                    try (PreparedStatement pstmtSecteur = conn.prepareStatement(fetchSecteur)) {
 	                        pstmtSecteur.setInt(1, idSec);
@@ -107,7 +108,7 @@ public class Mes_Reclammation extends JFrame {
 	                        }
 	                    }
 
-	                    model.addRow(new Object[]{CIN, titre, secteur, date, sujet});
+	                    model.addRow(new Object[]{CIN, titre, secteur, date, sujet,status});
 	                }
 	            }
 	        } else {
