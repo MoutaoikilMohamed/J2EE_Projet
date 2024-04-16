@@ -98,42 +98,49 @@ public class Login extends JFrame {
         } else {
             String username = cinField.getText();
             String password = new String(passField.getPassword());
-            String query = "SELECT * FROM users WHERE username=? AND pwd=?";
-
-            try (Connection conn = ConnectionDB.getConnection();
-                 PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setString(1, username);
-                ps.setString(2, password);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        int et = rs.getInt("etat");
-                        if (et == 1) {
-                            String role = rs.getString("role");
-                            
-                            switch (role) {
-                                case "citoyen":
-                                	openFrame(new Reclammation(username));
-                                    break;
-                                case "gestion":
-                                    openFrame(new Gestionnaire());
-                                    break;
-                                case "admin":
-                                    openFrame(new Administrateur());
-                                    break;
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Le compte est désactivé par l'administrateur", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No user exists with this username and password", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error accessing the database: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
-            }
+            authenticateUser(username, password);
         }
     }
+
+    private void authenticateUser(String username, String password) {
+        String query = "SELECT * FROM users WHERE username=? AND pwd=?";
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            try (ResultSet rs = ps.executeQuery()) {
+                handleLoginResult(rs, username);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error accessing the database: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void handleLoginResult(ResultSet rs, String username) throws SQLException {
+        if (rs.next()) {
+            int et = rs.getInt("etat");
+            if (et == 1) {
+                String role = rs.getString("role");
+                switch (role) {
+                    case "citoyen":
+                        openFrame(new Citoyens(username));
+                        break;
+                    case "gestion":
+                        openFrame(new Gestionnaire());
+                        break;
+                    case "admin":
+                        openFrame(new Administrateur());
+                        break;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Le compte est désactivé par l'administrateur", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No user exists with this username and password", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     private void openFrame(JFrame frame) {
         frame.setVisible(true);
