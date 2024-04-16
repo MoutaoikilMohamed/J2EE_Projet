@@ -20,7 +20,7 @@ public class Reclammation extends JFrame {
     	this.username = username;
         setTitle("Réclamation");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 700, 600); // Increased height to fit all components
+        setBounds(100, 100, 781, 600); // Increased height to fit all components
         contentPane = new JPanel();
         contentPane.setBackground(Color.WHITE);
         contentPane.setLayout(null);
@@ -35,16 +35,16 @@ public class Reclammation extends JFrame {
 
 	private void initializeComponents() {
         JLabel lblNewLabel = new JLabel(new ImageIcon(Reclammation.class.getResource("/image/back.PNG")));
-        lblNewLabel.setBounds(10, 11, 664, 89);
+        lblNewLabel.setBounds(10, 0, 854, 89);
         contentPane.add(lblNewLabel);
 
         JLabel lblNewLabel_1 = new JLabel(new ImageIcon(Reclammation.class.getResource("/image/Citoyen.PNG")));
-        lblNewLabel_1.setBounds(357, 111, 68, 59);
+        lblNewLabel_1.setBounds(432, 116, 68, 59);
         contentPane.add(lblNewLabel_1);
 
         JLabel lblNewLabel_2 = new JLabel("Espace Citoyen");
         lblNewLabel_2.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 22));
-        lblNewLabel_2.setBounds(295, 186, 250, 30);
+        lblNewLabel_2.setBounds(356, 186, 250, 30);
         contentPane.add(lblNewLabel_2);
 
         JLabel lblNewLabel_3 = new JLabel("Titre de réclamation");
@@ -53,7 +53,7 @@ public class Reclammation extends JFrame {
         contentPane.add(lblNewLabel_3);
 
         textField = new JTextField();
-        textField.setBounds(324, 270, 148, 20);
+        textField.setBounds(324, 270, 250, 20);
         contentPane.add(textField);
         textField.setColumns(10);
 
@@ -63,7 +63,7 @@ public class Reclammation extends JFrame {
         contentPane.add(lblNewLabel_4);
 
         comboBox = new JComboBox<>(); // Initialized here
-        comboBox.setBounds(324, 293, 148, 22);
+        comboBox.setBounds(324, 293, 250, 22);
         contentPane.add(comboBox);
 
         JLabel lblNewLabel_5 = new JLabel("Sujet de réclamation");
@@ -72,7 +72,7 @@ public class Reclammation extends JFrame {
         contentPane.add(lblNewLabel_5);
 
         textArea = new TextArea(); // Corrected to use the class-level variable
-        textArea.setBounds(115, 342, 357, 160);
+        textArea.setBounds(125, 342, 447, 160);
         contentPane.add(textArea);
 
         btn = new JButton("Envoyer");
@@ -81,14 +81,7 @@ public class Reclammation extends JFrame {
         contentPane.add(btn);
         btn.addActionListener(e -> insertReclamation());
 
-        btn2 = new JButton("Mes réclamations");
-        btn2.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        btn2.setBounds(156, 510, 148, 25);
-        contentPane.add(btn2);
-        btn2.addActionListener(e -> {
-            Mes_Reclammation mesReclammationWindow = new Mes_Reclammation(username);
-            mesReclammationWindow.setVisible(true);
-        });
+       
         
     }
 
@@ -143,8 +136,9 @@ public class Reclammation extends JFrame {
         String titre = textField.getText();
         int idSec = comboBox.getSelectedIndex() + 1; // Assuming comboBox indexes align with database indexes
         String sujet = textArea.getText();
+        String status="En cours de traitement";
 
-        String query = "INSERT INTO reclammation (titre_rec, date_rec, id_sec, sujet_rec,CIN) VALUES (?, NOW(), ?, ?, ?)";
+        String query = "INSERT INTO reclammation (titre_rec, date_rec, id_sec, sujet_rec,CIN,status) VALUES (?, NOW(), ?, ?, ?,?)";
 
         try (Connection conn = ConnectionDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -152,6 +146,7 @@ public class Reclammation extends JFrame {
             pstmt.setInt(2, idSec);
             pstmt.setString(3, sujet);
             pstmt.setString(4, userCIN); 
+            pstmt.setString(5, status); 
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
