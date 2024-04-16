@@ -18,10 +18,12 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE recuperation (
-    CIN VARCHAR(10) PRIMARY KEY,
-    DTN DATE,
-    PROVINCE VARCHAR(25)
+CREATE TABLE Recuperation(
+CIN varchar(20) PRIMARY KEY,
+Date_naissance varchar(20),
+Province varchar(20),
+rendez_vous varchar(20),
+code int
 );
 
 
