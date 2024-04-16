@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -139,31 +140,34 @@ public class Recuper extends JFrame {
 		        String province = PROVINCE.getSelectedItem().toString();
 		        
 		        Connection conn = ConnectionDB.getConnection();
-		        
+		        LocalDate currentDate = LocalDate.now();
+
+                LocalDate futureDate = currentDate.plusDays(2);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String formattedDate = futureDate.format(formatter);
+
 		        if (cin.isEmpty() || dateString.isEmpty() || province.isEmpty()) {
 		            JOptionPane.showMessageDialog(null, "Tous les champs doivent être remplis.", "Erreur", JOptionPane.ERROR_MESSAGE);
 		            return; 
 		        }
-		        
+		        Random random = new Random();
+		        int code = random.nextInt(10000) + 1;
 		        if (conn != null) {
 		            try {
-		                String sql = "INSERT INTO recuperation (CIN, DTN, PROVINCE) VALUES (?, ?, ?)";
+		                String sql = "INSERT INTO Recuperation (CIN, date_naissance, Province,rendez_vous,code) VALUES (?, ?, ?, ?, ?)";
 		                PreparedStatement pstmt = conn.prepareStatement(sql);
 		                
 		                pstmt.setString(1, cin);
 		                pstmt.setString(2, dateString);
 		                pstmt.setString(3, province);
+		                pstmt.setString(4,formattedDate);
+		                pstmt.setInt(5, code);
 		                
 		                pstmt.executeUpdate();
 		              
-		                JOptionPane.showMessageDialog(null, "données bien insérer veuillez patiengter  !");
-		                LocalDate currentDate = LocalDate.now();
-
-		                LocalDate futureDate = currentDate.plusDays(2);
-
-		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		                String formattedDate = futureDate.format(formatter);
-
+		                JOptionPane.showMessageDialog(null, "données bien insérer , Capturer ce code de rendez vous : '"+code+"'");
+		              
 		                ProvConfir.setText(province);
 		                DATEConf.setText(formattedDate);
 		                DateText.setVisible(true);
