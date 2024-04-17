@@ -94,7 +94,7 @@ public class AccessReclamation extends JFrame{
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nom", "Type", "Localisation", "date cration", "date résolution", "Status", "CIN"
+				"ID", "Nom", "Type", "Localisation", "date cration", "date résolution", "Status", "CIN", "Action"
 			}
 		));
 		Connection conn = null;
