@@ -1,0 +1,53 @@
+-- Drop the existing database if it already exists
+DROP DATABASE IF EXISTS projectjavaswing;
+
+
+-- Create a new database
+CREATE DATABASE projectjavaswing;
+
+-- Select the database for use
+USE projectjavaswing;
+
+CREATE TABLE users (
+    idusers int PRIMARY KEY auto_increment,
+    username VARCHAR(39),
+    nom VARCHAR(39),
+    prenom VARCHAR(39),
+    pwd VARCHAR(30),
+    date_naissance DATE,
+    lieu_naissance VARCHAR(50),
+    province VARCHAR(20),
+    Ntel VARCHAR(30),
+    role VARCHAR(10),
+    CIN VARCHAR(6) UNIQUE
+);
+
+CREATE TABLE secteur_rec (
+    idsec INTEGER PRIMARY KEY AUTO_INCREMENT,
+    secteur VARCHAR(30)
+);
+
+-- Create a 'reclammation' table
+CREATE TABLE reclammation (
+    idrec INTEGER PRIMARY KEY AUTO_INCREMENT,
+    titre_rec VARCHAR(20),
+    date_rec DATE,
+    id_sec INTEGER,
+    Sujet_rec VARCHAR(200),
+    CIN VARCHAR(6),
+    status VARCHAR(90),
+    FOREIGN KEY (id_sec) REFERENCES secteur_rec(idsec),
+    FOREIGN KEY (CIN) REFERENCES users(CIN)
+);
+
+
+INSERT INTO users (username, nom, prenom, pwd, date_naissance, lieu_naissance, province, Ntel, role, CIN) VALUES
+('hamid', 'soussi', 'abdelhamid', '1234', '2022-10-23', 'agadir', 'agadir idaoutannane', '06126126', 'citoyen', 'JH7641'),
+('hatim', 'salhi', 'hatim', '1234', '2004-09-12', 'ait mellol', 'inzegane ait mellol', '0012128', 'admin', 'JH7621');
+
+-- Insert data into 'secteur_rec'
+INSERT INTO secteur_rec (secteur) VALUES
+('Secteur public'),
+('Secteur privé'),
+('Secteur juridique'),
+('Secteur social');
