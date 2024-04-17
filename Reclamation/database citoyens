@@ -18,7 +18,9 @@ CREATE TABLE users (
     lieu_naissance VARCHAR(50),
     province VARCHAR(20),
     Ntel VARCHAR(30),
+    email varchar(30),
     role VARCHAR(10),
+    
     CIN VARCHAR(6) UNIQUE
 );
 
@@ -41,9 +43,9 @@ CREATE TABLE reclammation (
 );
 
 
-INSERT INTO users (username, nom, prenom, pwd, date_naissance, lieu_naissance, province, Ntel, role, CIN) VALUES
-('hamid', 'soussi', 'abdelhamid', '1234', '2022-10-23', 'agadir', 'agadir idaoutannane', '06126126', 'citoyen', 'JH7641'),
-('hatim', 'salhi', 'hatim', '1234', '2004-09-12', 'ait mellol', 'inzegane ait mellol', '0012128', 'admin', 'JH7621');
+INSERT INTO users (username, nom, prenom, pwd, date_naissance, lieu_naissance, province, Ntel,email, role, CIN) VALUES
+('hamid', 'soussi', 'abdelhamid', '1234', '2022-10-23', 'agadir', 'agadir idaoutannane', '06126126', 'hamid@gmail.com','citoyen', 'JH7641'),
+('hatim', 'salhi', 'hatim', '1234', '2004-09-12', 'ait mellol', 'inzegane ait mellol', '0012128', 'hatim@gmail.com','admin', 'JH7621');
 
 -- Insert data into 'secteur_rec'
 INSERT INTO secteur_rec (secteur) VALUES
