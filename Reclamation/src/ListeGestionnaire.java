@@ -114,7 +114,7 @@ public class ListeGestionnaire extends JFrame {
 		try {
 		    conn = ConnectionDB.getConnection();
 
-		    String sql = "SELECT idusers, nom, prenom, date_naissance, province, Ntel FROM USERS WHERE Role ='Gestionneur'";
+		    String sql = "SELECT idusers, nom, prenom, date_naissance, province, Ntel FROM USERS WHERE Role ='Gestionnaire'";
 		    java.sql.Statement statement = conn.createStatement();
 		    ResultSet resultSet = statement.executeQuery(sql);
 
