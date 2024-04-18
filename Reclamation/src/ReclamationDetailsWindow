@@ -1,0 +1,61 @@
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.util.Date;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+class ReclamationDetailsWindow extends JFrame {
+    private JPanel contentPane;
+    private int ID;
+    private String nom;
+    private String type;
+    private String localisation;
+    private Date date_creation;
+    private Date date_resolution;
+    private String status;
+    private String CIN;
+
+    public ReclamationDetailsWindow(int ID, String nom, String type, String localisation, Date date_creation, Date date_resolution, String status, String CIN) {
+        this.ID = ID;
+        this.nom = nom;
+        this.type = type;
+        this.localisation = localisation;
+        this.date_creation = date_creation;
+        this.date_resolution = date_resolution;
+        this.status = status;
+        this.CIN = CIN;
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 400, 300);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(new BorderLayout(0, 0));
+
+        JLabel lblDetails = new JLabel("Détails de la réclamation (ID: " + ID + ")");
+        lblDetails.setHorizontalAlignment(SwingConstants.CENTER);
+        lblDetails.setFont(new Font("Tahoma", Font.BOLD, 16));
+        contentPane.add(lblDetails, BorderLayout.NORTH);
+
+        // Ajouter des composants pour afficher les détails de la réclamation
+        JTextArea detailsArea = new JTextArea();
+        detailsArea.setEditable(false);
+        detailsArea.append("Nom: " + nom + "\n");
+        detailsArea.append("Type: " + type + "\n");
+        detailsArea.append("Localisation: " + localisation + "\n");
+        detailsArea.append("Date de Réclamation: " + date_creation + "\n");
+        detailsArea.append("Status: " + status + "\n");
+        detailsArea.append("CIN: " + CIN + "\n");
+        
+
+        JScrollPane scrollPane = new JScrollPane(detailsArea);
+        contentPane.add(scrollPane, BorderLayout.CENTER);
+    }
+
+}
