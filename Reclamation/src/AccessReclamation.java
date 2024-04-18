@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
@@ -94,7 +96,7 @@ public class AccessReclamation extends JFrame{
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nom", "Type", "Localisation", "date cration", "date résolution", "Status", "CIN", "Action"
+				"ID", "Nom", "Type", "Localisation", "date création", "date résolution", "Status", "CIN"
 			}
 		));
 		Connection conn = null;
@@ -115,10 +117,72 @@ public class AccessReclamation extends JFrame{
 		        Date date_creation = resultSet.getDate("date_creation"); 
 		        Date date_resolution = resultSet.getDate("date_resolution");
 		        String status = resultSet.getString("status");
-		        String CIN = resultSet.getString("CIN"); 
+		        String CIN = resultSet.getString("CIN");
 
 		        model.addRow(new Object[]{id, nom, type, localisation, date_creation, date_resolution, status, CIN});
 		    }
+		    
+		    JButton btnNewButton = new JButton("Vérifier la Réclamation");
+		    btnNewButton.setForeground(new Color(255, 255, 255));
+		    btnNewButton.setBackground(new Color(255, 128, 128));
+		    btnNewButton.setFont(new Font("Sylfaen", Font.PLAIN, 13));
+		    btnNewButton.setBounds(180, 460, 200, 31);
+		    contentPane.add(btnNewButton);
+
+		    JTextField textField = new JTextField();
+		    textField.setBounds(26, 460, 150, 31);
+		    contentPane.add(textField);
+
+		    btnNewButton.addActionListener(new ActionListener() {
+		        public void actionPerformed(ActionEvent e) {
+		            try {
+		                String textFieldText = textField.getText();
+		                if (textFieldText.isEmpty()) {
+		                    JOptionPane.showMessageDialog(contentPane, "Veuillez saisir un ID.");
+		                    return; // Sortir de la méthode actionPerformed si le champ texte est vide
+		                }
+
+		                int ID = Integer.parseInt(textFieldText);
+
+		                Connection conn = null;
+		                PreparedStatement statement = null;
+		                ResultSet resultSet = null;
+		                try {
+		                    conn = ConnectionDB.getConnection();
+		                    String sql = "SELECT * FROM reclamation WHERE ID = ?";
+		                    statement = conn.prepareStatement(sql);
+		                    statement.setInt(1, ID);
+		                    resultSet = statement.executeQuery();
+		                    
+		                    if (resultSet.next()) {
+		                        // Extraire les détails de la réclamation du ResultSet
+		                        String nom = resultSet.getString("nom");
+		                        String type = resultSet.getString("type");
+		                        String localisation = resultSet.getString("localisation");
+		                        Date dateCreation = resultSet.getDate("date_creation");
+		                        Date dateResolution = resultSet.getDate("date_resolution");
+		                        String status = resultSet.getString("status");
+		                        String cin = resultSet.getString("CIN");
+
+		                        // Créer et afficher la fenêtre des détails de la réclamation
+		                        ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, status, cin);
+		                        detailsWindow.setVisible(true);
+		                    } else {
+		                        JOptionPane.showMessageDialog(contentPane, "Aucune réclamation trouvée pour l'ID spécifié.");
+		                    }
+		                } catch (NumberFormatException ex) {
+		                    JOptionPane.showMessageDialog(contentPane, "Veuillez saisir un ID valide.");
+		                } finally {
+		                    // Fermer les ressources JDBC
+		                    if (resultSet != null) resultSet.close();
+		                    if (statement != null) statement.close();
+		                    if (conn != null) conn.close();
+		                }
+		            } catch (SQLException ex) {
+		                ex.printStackTrace();
+		            }
+		        }
+		    });
 	
 		} catch (SQLException ex) {
 		    JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
