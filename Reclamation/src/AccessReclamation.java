@@ -161,11 +161,12 @@ public class AccessReclamation extends JFrame{
 		                        String localisation = resultSet.getString("localisation");
 		                        Date dateCreation = resultSet.getDate("date_creation");
 		                        Date dateResolution = resultSet.getDate("date_resolution");
+		                        String description = resultSet.getString("Description");
 		                        String status = resultSet.getString("status");
 		                        String cin = resultSet.getString("CIN");
 
 		                        // Créer et afficher la fenêtre des détails de la réclamation
-		                        ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, status, cin);
+		                        ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, description, status, cin);
 		                        detailsWindow.setVisible(true);
 		                    } else {
 		                        JOptionPane.showMessageDialog(contentPane, "Aucune réclamation trouvée pour l'ID spécifié.");
