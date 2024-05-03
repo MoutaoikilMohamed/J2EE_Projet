@@ -1,5 +1,3 @@
-
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -87,8 +85,8 @@ public class Administrateur extends JFrame {
 		        listeCitoyen.setVisible(true); 
 		    }
 		});
-		btnNewButton_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/report (1).png")));
-		btnNewButton_1_1.setBounds(579, 302, 213, 216);
+		btnNewButton_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/rapport (1).png")));
+		btnNewButton_1_1.setBounds(579, 283, 213, 235);
 		contentPane.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_1_1_1 = new JButton("");
@@ -102,13 +100,13 @@ public class Administrateur extends JFrame {
 	
 		btnNewButton_1_1_1.setBackground(new Color(255, 183, 183));
 		btnNewButton_1_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/profile.png")));
-		btnNewButton_1_1_1.setBounds(311, 302, 208, 216);
+		btnNewButton_1_1_1.setBounds(311, 283, 208, 235);
 		contentPane.add(btnNewButton_1_1_1);
 		
 		JButton btnNewButton_1_1_1_1 = new JButton("");
 		btnNewButton_1_1_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/Citoyens.png")));
 		btnNewButton_1_1_1_1.setBackground(new Color(255, 183, 183));
-		btnNewButton_1_1_1_1.setBounds(48, 302, 197, 216);
+		btnNewButton_1_1_1_1.setBounds(48, 283, 197, 235);
 		contentPane.add(btnNewButton_1_1_1_1);
 		btnNewButton_1_1_1_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -129,7 +127,7 @@ public class Administrateur extends JFrame {
 		btnNewButton.setBounds(48, 521, 197, 29);
 		contentPane.add(btnNewButton);
 		
-		JButton btnGestionnaire = new JButton("Gestionnaire");
+		JButton btnGestionnaire = new JButton("Agents");
 		btnGestionnaire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
