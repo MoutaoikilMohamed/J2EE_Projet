@@ -56,12 +56,6 @@ public class ListeReclamation extends JFrame {
 		lblNewLabel.setIcon(new ImageIcon(ListeReclamation.class.getResource("/image/back.PNG")));
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Interface d'exploration");
-		lblNewLabel_1_1.setForeground(new Color(0, 147, 0));
-		lblNewLabel_1_1.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
-		lblNewLabel_1_1.setBounds(23, 103, 231, 24);
-		contentPane.add(lblNewLabel_1_1);
-		
 		JLabel lblNewLabel_1 = new JLabel("Espace Administrateur");
 		lblNewLabel_1.setForeground(new Color(0, 196, 0));
 		lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 17));
@@ -80,7 +74,7 @@ public class ListeReclamation extends JFrame {
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 272, 812, 171);
+		scrollPane.setBounds(23, 272, 812, 353);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		contentPane.add(scrollPane);
@@ -91,7 +85,7 @@ public class ListeReclamation extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Nom", "Type", "Localisation", "date cration", "date résolution", "Status", "CIN"
+				"ID", "Nom", "Type", "Localisation", "date creation", "date résolution", "Status", "CIN"
 			}
 		));
 		Connection conn = null;
@@ -125,3 +119,4 @@ public class ListeReclamation extends JFrame {
 	}
 
 }
+
