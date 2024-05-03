@@ -190,4 +190,40 @@ public class AccessReclamation extends JFrame{
 		    ConnectionDB.closeConnection(conn);
 		}
 	}
+	
+	private void updateResolutionDate(int id, Date currentDate) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = ConnectionDB.getConnection();
+
+            String sql = "UPDATE Reclamation SET date_resolution = ? WHERE id = ?";
+            
+            statement = connection.prepareStatement(sql);
+            statement.setDate(1, new java.sql.Date(currentDate.getTime())); // Convertir java.util.Date en java.sql.Date
+            statement.setInt(2, id);
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Date de résolution de la réclamation " + id + " mise à jour à : " + currentDate);
+            } else {
+                System.out.println("Aucune réclamation trouvée avec l'ID : " + id);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }
