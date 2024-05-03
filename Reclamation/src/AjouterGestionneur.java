@@ -113,7 +113,7 @@ public class AjouterGestionneur extends JFrame {
 		AjouterG = new JButton("Ajouter");
 		AjouterG.setBackground(new Color(255, 128, 128));
 		AjouterG.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-		AjouterG.setBounds(337, 564, 193, 28);
+		AjouterG.setBounds(338, 597, 193, 28);
 		contentPane.add(AjouterG);
 		
 		JDateChooser date_naissance = new JDateChooser();
@@ -125,10 +125,10 @@ public class AjouterGestionneur extends JFrame {
 		dtnG.setBounds(138, 353, 122, 28);
 		contentPane.add(dtnG);
 		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Ajouter un Gestionneur");
+		JLabel lblNewLabel_1_1_1 = new JLabel("Ajouter un Agent administrative");
 		lblNewLabel_1_1_1.setForeground(Color.BLACK);
 		lblNewLabel_1_1_1.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
-		lblNewLabel_1_1_1.setBounds(337, 110, 231, 24);
+		lblNewLabel_1_1_1.setBounds(305, 109, 280, 24);
 		contentPane.add(lblNewLabel_1_1_1);
 		
 		JLabel txtU = new JLabel("Nom utilisateur");
@@ -162,6 +162,16 @@ public class AjouterGestionneur extends JFrame {
 		Tel.setBounds(99, 498, 207, 28);
 		contentPane.add(Tel);
 		Tel.setColumns(10);
+		
+		JLabel lblServiceAdministrative = new JLabel("Service administrative");
+		lblServiceAdministrative.setFont(new Font("Trebuchet MS", Font.BOLD, 13));
+		lblServiceAdministrative.setBounds(361, 527, 156, 14);
+		contentPane.add(lblServiceAdministrative);
+		
+		JComboBox Service = new JComboBox();
+		Service.setModel(new DefaultComboBoxModel(new String[] {"Juridique", "Publique", "Privee", "Social"}));
+		Service.setBounds(338, 564, 193, 22);
+		contentPane.add(Service);
 		AjouterG.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        String cin = CIN.getText();
@@ -170,6 +180,8 @@ public class AjouterGestionneur extends JFrame {
 		        String dateString = dateFormat.format(dtn);
 		        String province = PROVINCE.getSelectedItem().toString();
 		        String tel = Tel.getText();
+		        String Serv = Service.getSelectedItem().toString();
+
 
 		        Connection conn = ConnectionDB.getConnection();
 
@@ -190,7 +202,7 @@ public class AjouterGestionneur extends JFrame {
 
 		        if (conn != null) {
 		            try {
-		                String sql = "INSERT INTO USERS (idusers, username, nom, prenom, pwd, date_naissance, province, Ntel, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Gestionneur')";
+		                String sql = "INSERT INTO USERS (idusers, username, nom, prenom, pwd, date_naissance, province, Ntel, Role,Service) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Gestionneur',?)";
 		                PreparedStatement pstmt = conn.prepareStatement(sql);
 
 		                pstmt.setString(1, cin);
@@ -201,6 +213,8 @@ public class AjouterGestionneur extends JFrame {
 		                pstmt.setString(6, dateString);
 		                pstmt.setString(7, province);
 		                pstmt.setString(8, tel); 
+		                pstmt.setString(9, Serv); 
+
 
 		                pstmt.executeUpdate();
 
@@ -215,3 +229,4 @@ public class AjouterGestionneur extends JFrame {
 		});
 	    }
 	}
+
