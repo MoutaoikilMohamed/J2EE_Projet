@@ -14,7 +14,8 @@ CREATE TABLE users (
     date_naissance varchar(20), --C'est mieu de la laisser Varchar
     province varchar(20),
     Ntel VARCHAR(30),
-    role VARCHAR(10)
+    role VARCHAR(10),
+    Service VARCHAR(10)
 );
 
 
