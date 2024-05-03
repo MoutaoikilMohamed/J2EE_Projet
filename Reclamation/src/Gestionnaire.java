@@ -66,7 +66,7 @@ public class Gestionnaire extends JFrame {
 		        listeCitoyen.setVisible(true); 
 		    }
 		});
-		btnNewButton_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/report (1).png")));
+		btnNewButton_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/database (1).png")));
 		btnNewButton_1_1.setBounds(579, 302, 213, 216);
 		contentPane.add(btnNewButton_1_1);
 		
