@@ -1,7 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,10 +58,129 @@ class ReclamationDetailsWindow extends JFrame {
         detailsArea.append("Date de Réclamation: " + date_creation + "\n");
         detailsArea.append("Status: " + status + "\n");
         detailsArea.append("CIN: " + CIN + "\n");
-        
 
         JScrollPane scrollPane = new JScrollPane(detailsArea);
         contentPane.add(scrollPane, BorderLayout.CENTER);
+
+        // Ajouter les boutons "Refuser" et "Accepter"
+        JPanel buttonPanel = new JPanel();
+        contentPane.add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton btnRefuser = new JButton("Refuser");
+        btnRefuser.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Mettre à jour le status de la réclamation à "Refusée"
+                // (supposons que vous ayez une méthode pour cela dans votre classe de gestion des réclamations)
+                updateReclamationStatus(ID, "Refusée");
+                // Fermer la fenêtre
+                dispose();
+            }
+        });
+
+        buttonPanel.add(btnRefuser);
+
+        JButton btnAccepter = new JButton("Accepter");
+        btnAccepter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Mettre à jour le status de la réclamation à "Acceptée"
+                // (supposons que vous ayez une méthode pour cela dans votre classe de gestion des réclamations)
+                updateReclamationStatus(ID, "Acceptée");
+                // Obtenir la date et l'heure actuelles
+                Date currentDate = new Date();
+
+                // Mettre à jour la date de résolution dans la base de données
+                updateResolutionDate(ID, currentDate);
+
+                // Fermer la fenêtre
+                dispose();
+            }
+        });
+        buttonPanel.add(btnAccepter);
     }
 
+    // Méthode pour mettre à jour le status de la réclamation dans la base de données
+    private void updateReclamationStatus(int id, String newStatus) {
+        // Connexion à la base de données
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            // Établir une connexion à la base de données
+            connection = ConnectionDB.getConnection();
+
+            // Requête SQL pour mettre à jour le status de la réclamation
+            String sql = "UPDATE Reclamation SET status = ? WHERE id = ?";
+
+            // Préparer la déclaration avec les valeurs nécessaires
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, newStatus);
+            statement.setInt(2, id);
+
+            // Exécuter la mise à jour
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Status de la réclamation " + id + " mis à jour à : " + newStatus);
+            } else {
+                System.out.println("Aucune réclamation trouvée avec l'ID : " + id);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            // Fermer la connexion et la déclaration
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    // Méthode pour mettre à jour la date de résolution de la réclamation dans la base de données
+    private void updateResolutionDate(int id, Date currentDate) {
+        // Connexion à la base de données
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            // Établir une connexion à la base de données
+            connection = ConnectionDB.getConnection();
+
+            // Requête SQL pour mettre à jour la date de résolution de la réclamation
+            String sql = "UPDATE Reclamation SET date_resolution = ? WHERE id = ?";
+
+            // Préparer la déclaration avec les valeurs nécessaires
+            statement = connection.prepareStatement(sql);
+            statement.setDate(1, new java.sql.Date(currentDate.getTime())); // Convertir java.util.Date en java.sql.Date
+            statement.setInt(2, id);
+
+            // Exécuter la mise à jour
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Date de résolution de la réclamation " + id + " mise à jour à : " + currentDate);
+            } else {
+                System.out.println("Aucune réclamation trouvée avec l'ID : " + id);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            // Fermer la connexion et la déclaration
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }
