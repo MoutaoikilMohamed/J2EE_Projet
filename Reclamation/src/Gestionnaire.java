@@ -103,6 +103,8 @@ public class Gestionnaire extends JFrame {
 		btnNewButton.setFont(new Font("Sylfaen", Font.BOLD, 17));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ListeCitoyens listeCitoyens = new ListeCitoyens();
+				listeCitoyens.setVisible(true);
 			}
 		});
 		btnNewButton.setBounds(48, 521, 197, 29);
@@ -111,6 +113,8 @@ public class Gestionnaire extends JFrame {
 		JButton btnGestionnaire = new JButton("Gestionnaire");
 		btnGestionnaire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ListeGestionnaire listeGestionnaire = new ListeGestionnaire();
+				listeGestionnaire.setVisible(true);
 			}
 		});
 		btnGestionnaire.setBackground(new Color(255, 183, 183));
@@ -124,6 +128,8 @@ public class Gestionnaire extends JFrame {
 		btnRclamations.setBackground(new Color(255, 183, 183));
 		btnRclamations.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				AccessReclamation accessReclamation = new AccessReclamation();
+				accessReclamation.setVisible(true);
 			}
 		});
 		btnRclamations.setFont(new Font("Sylfaen", Font.BOLD, 16));
