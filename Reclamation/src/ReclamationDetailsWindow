@@ -24,16 +24,18 @@ class ReclamationDetailsWindow extends JFrame {
     private String localisation;
     private Date date_creation;
     private Date date_resolution;
+    private String description;
     private String status;
     private String CIN;
 
-    public ReclamationDetailsWindow(int ID, String nom, String type, String localisation, Date date_creation, Date date_resolution, String status, String CIN) {
+    public ReclamationDetailsWindow(int ID, String nom, String type, String localisation, Date date_creation, Date date_resolution, String description, String status, String CIN) {
         this.ID = ID;
         this.nom = nom;
         this.type = type;
         this.localisation = localisation;
         this.date_creation = date_creation;
         this.date_resolution = date_resolution;
+        this.description = description;
         this.status = status;
         this.CIN = CIN;
 
@@ -56,6 +58,7 @@ class ReclamationDetailsWindow extends JFrame {
         detailsArea.append("Type: " + type + "\n");
         detailsArea.append("Localisation: " + localisation + "\n");
         detailsArea.append("Date de Réclamation: " + date_creation + "\n");
+        detailsArea.append("Description: " + description + "\n");
         detailsArea.append("Status: " + status + "\n");
         detailsArea.append("CIN: " + CIN + "\n");
 
