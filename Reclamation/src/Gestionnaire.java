@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +17,14 @@ public class Gestionnaire extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private String idusers;
+    private String nom;
+    private String prenom;
+    private String username;
+    private String CIN;
+    private Date date_naissance;
+    private String province;
+    private String Ntel;
 
 	/**
 	 * Launch the application.
@@ -62,8 +71,8 @@ public class Gestionnaire extends JFrame {
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		     
-		        ListeReclamation listeCitoyen = new ListeReclamation(); 
-		        listeCitoyen.setVisible(true); 
+		    	AccessReclamation accessReclamation = new AccessReclamation();
+		        accessReclamation.setVisible(true);
 		    }
 		});
 		btnNewButton_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/database (1).png")));
@@ -74,15 +83,23 @@ public class Gestionnaire extends JFrame {
 		btnNewButton_1_1_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		     
-		        ListeGestionnaire listeCitoyen = new ListeGestionnaire(); 
-		        listeCitoyen.setVisible(true); 
+		    	AccessReclamation accessReclamation = new AccessReclamation();
+				accessReclamation.setVisible(true);
 		    }
 		});
 	
-		btnNewButton_1_1_1.setBackground(new Color(255, 183, 183));
-		btnNewButton_1_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/profile.png")));
-		btnNewButton_1_1_1.setBounds(311, 302, 208, 216);
-		contentPane.add(btnNewButton_1_1_1);
+		JButton btnNewButton_1_1_11 = new JButton("");
+		btnNewButton_1_1_11.setBackground(new Color(255, 183, 183));
+		btnNewButton_1_1_11.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/profile.png")));
+		btnNewButton_1_1_11.setBounds(311, 302, 208, 216);
+		contentPane.add(btnNewButton_1_1_11);
+		btnNewButton_1_1_11.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		     
+		        ProfileGestionnaire profileGestionnaire = new ProfileGestionnaire(idusers); 
+		        profileGestionnaire.setVisible(true); 
+		    }
+		});
 		
 		JButton btnNewButton_1_1_1_1 = new JButton("");
 		btnNewButton_1_1_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/Citoyens.png")));
@@ -110,18 +127,18 @@ public class Gestionnaire extends JFrame {
 		btnNewButton.setBounds(48, 521, 197, 29);
 		contentPane.add(btnNewButton);
 		
-		JButton btnGestionnaire = new JButton("Gestionnaire");
-		btnGestionnaire.addActionListener(new ActionListener() {
+		JButton btnProfileGestionnaire = new JButton("Mon Profil");
+		btnProfileGestionnaire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ListeGestionnaire listeGestionnaire = new ListeGestionnaire();
-				listeGestionnaire.setVisible(true);
+				ProfileGestionnaire profilGestionnaire = new ProfileGestionnaire(idusers);
+				profilGestionnaire.setVisible(true);
 			}
 		});
-		btnGestionnaire.setBackground(new Color(255, 183, 183));
-		btnGestionnaire.setForeground(new Color(255, 255, 255));
-		btnGestionnaire.setFont(new Font("Sylfaen", Font.BOLD, 16));
-		btnGestionnaire.setBounds(311, 522, 208, 29);
-		contentPane.add(btnGestionnaire);
+		btnProfileGestionnaire.setBackground(new Color(255, 183, 183));
+		btnProfileGestionnaire.setForeground(new Color(255, 255, 255));
+		btnProfileGestionnaire.setFont(new Font("Sylfaen", Font.BOLD, 16));
+		btnProfileGestionnaire.setBounds(311, 522, 208, 29);
+		contentPane.add(btnProfileGestionnaire);
 		
 		JButton btnRclamations = new JButton("Réclamations");
 		btnRclamations.setForeground(new Color(255, 255, 255));
