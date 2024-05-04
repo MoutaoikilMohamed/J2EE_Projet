@@ -66,6 +66,7 @@ public class ReclamationDetailsWindow extends JFrame {
         btnRefuser.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 updateReclamationStatus(ID, "Refusée");
+                btnRefuser.setEnabled(false);
                 dispose();
             }
         });
@@ -80,6 +81,8 @@ public class ReclamationDetailsWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 updateReclamationStatus(ID, "Acceptée");
                 updateResolutionDate(ID, new Date());
+                btnRefuser.setEnabled(false);
+                btnAccepter.setEnabled(false);
                 dispose();
             }
         });
