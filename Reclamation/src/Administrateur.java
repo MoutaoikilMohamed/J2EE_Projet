@@ -45,9 +45,9 @@ public class Administrateur extends JFrame {
 	                int minute = calendar.get(Calendar.MINUTE);
 	                int second = calendar.get(Calendar.SECOND);
 	                String currentTime = String.format("%02d:%02d:%02d", hour, minute, second);
-	                ((JLabel) getContentPane().getComponent(0)).setText(currentTime); // Mise à jour du JLabel
+	                ((JLabel) getContentPane().getComponent(0)).setText(currentTime); 
 	                try {
-	                    Thread.sleep(1000); // Actualisation chaque seconde
+	                    Thread.sleep(1000); 
 	                } catch (InterruptedException ex) {
 	                    ex.printStackTrace();
 	                }
@@ -57,7 +57,7 @@ public class Administrateur extends JFrame {
 	    }
 	public Administrateur() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 872, 675);
+        setBounds(100, 100, 1081, 675);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,13 +67,13 @@ public class Administrateur extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(Administrateur.class.getResource("/image/back.PNG")));
-		lblNewLabel.setBounds(0, 0, 881, 82);
+		lblNewLabel.setBounds(86, 0, 739, 71);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Espace Administrateur");
 		lblNewLabel_1.setForeground(new Color(0, 196, 0));
 		lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 17));
-		lblNewLabel_1.setBounds(350, 157, 231, 24);
+		lblNewLabel_1.setBounds(434, 166, 231, 24);
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnNewButton_1_1 = new JButton("");
@@ -86,7 +86,7 @@ public class Administrateur extends JFrame {
 		    }
 		});
 		btnNewButton_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/rapport (1).png")));
-		btnNewButton_1_1.setBounds(579, 283, 213, 235);
+		btnNewButton_1_1.setBounds(544, 283, 213, 235);
 		contentPane.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_1_1_1 = new JButton("");
@@ -100,13 +100,13 @@ public class Administrateur extends JFrame {
 	
 		btnNewButton_1_1_1.setBackground(new Color(255, 183, 183));
 		btnNewButton_1_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/profile.png")));
-		btnNewButton_1_1_1.setBounds(311, 283, 208, 235);
+		btnNewButton_1_1_1.setBounds(277, 283, 208, 235);
 		contentPane.add(btnNewButton_1_1_1);
 		
 		JButton btnNewButton_1_1_1_1 = new JButton("");
 		btnNewButton_1_1_1_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/Citoyens.png")));
 		btnNewButton_1_1_1_1.setBackground(new Color(255, 183, 183));
-		btnNewButton_1_1_1_1.setBounds(48, 283, 197, 235);
+		btnNewButton_1_1_1_1.setBounds(21, 283, 197, 235);
 		contentPane.add(btnNewButton_1_1_1_1);
 		btnNewButton_1_1_1_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -124,7 +124,7 @@ public class Administrateur extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton.setBounds(48, 521, 197, 29);
+		btnNewButton.setBounds(21, 521, 197, 29);
 		contentPane.add(btnNewButton);
 		
 		JButton btnGestionnaire = new JButton("Agents");
@@ -135,7 +135,7 @@ public class Administrateur extends JFrame {
 		btnGestionnaire.setBackground(new Color(255, 183, 183));
 		btnGestionnaire.setForeground(new Color(255, 255, 255));
 		btnGestionnaire.setFont(new Font("Sylfaen", Font.BOLD, 16));
-		btnGestionnaire.setBounds(311, 522, 208, 29);
+		btnGestionnaire.setBounds(277, 522, 208, 29);
 		contentPane.add(btnGestionnaire);
 		
 		JButton btnRclamations = new JButton("Réclamations");
@@ -146,7 +146,7 @@ public class Administrateur extends JFrame {
 			}
 		});
 		btnRclamations.setFont(new Font("Sylfaen", Font.BOLD, 16));
-		btnRclamations.setBounds(579, 521, 213, 30);
+		btnRclamations.setBounds(544, 521, 213, 30);
 		contentPane.add(btnRclamations);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Interface d'exploration");
@@ -157,8 +157,37 @@ public class Administrateur extends JFrame {
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Administrateur.class.getResource("/image/boss.png")));
-		lblNewLabel_2.setBounds(425, 80, 86, 66);
+		lblNewLabel_2.setBounds(508, 89, 86, 66);
 		contentPane.add(lblNewLabel_2);
+		
+		JButton btnNewButton_1_1_2 = new JButton("");
+		btnNewButton_1_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    Recuperation Recuper = new Recuperation(); 
+			    Recuper.setVisible(true);
+			}
+		});
+		btnNewButton_1_1_2.setIcon(new ImageIcon(Administrateur.class.getResource("/image/sauvegarder (1).png")));
+		btnNewButton_1_1_2.setBackground(new Color(255, 183, 183));
+		btnNewButton_1_1_2.setBounds(810, 283, 213, 235);
+		contentPane.add(btnNewButton_1_1_2);
+		
+		JButton btnRcuperationxml = new JButton("Récuperation (XML)");
+		btnRcuperationxml.setForeground(Color.WHITE);
+		btnRcuperationxml.setFont(new Font("Sylfaen", Font.BOLD, 16));
+		btnRcuperationxml.setBackground(new Color(255, 183, 183));
+		btnRcuperationxml.setBounds(810, 522, 213, 30);
+		contentPane.add(btnRcuperationxml);
+		
+		JLabel lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setIcon(new ImageIcon(Administrateur.class.getResource("/image/back - Copie.PNG")));
+		lblNewLabel_3.setBounds(572, 0, 881, 71);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_3_1 = new JLabel("");
+		lblNewLabel_3_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/back - Copie.PNG")));
+		lblNewLabel_3_1.setBounds(0, -11, 175, 89);
+		contentPane.add(lblNewLabel_3_1);
 
 	}
 }
