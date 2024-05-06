@@ -13,7 +13,7 @@ public class Mes_Reclammation extends JFrame {
     private JPanel contentPane;
     private JTable table;
     private JScrollPane scrollPane;
-    private String username;
+    private String CIN;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -28,8 +28,8 @@ public class Mes_Reclammation extends JFrame {
 
 
 
-    public Mes_Reclammation(String username2) {
-        this.username = username2;
+    public Mes_Reclammation(String CIN) {
+        this.CIN = CIN;
         initialize();
         afficher_recl();
 	}
@@ -75,13 +75,13 @@ public class Mes_Reclammation extends JFrame {
     }
 
 	public void afficher_recl() {
-	    String fetchCIN = "SELECT CIN FROM users WHERE username=?";
-	    String fetchReclamations = "SELECT titre_rec, id_sec, date_rec, Sujet_rec,status FROM reclammation WHERE CIN=?";
+	    String fetchCIN = "SELECT CIN FROM users WHERE CIN=?";
+	    String fetchReclamations = "SELECT nom, idsec, date_creation, Description,status FROM Reclamation WHERE CIN=?";
 	    String fetchSecteur = "SELECT secteur FROM secteur_rec WHERE idsec=?";
 	    try (Connection conn = ConnectionDB.getConnection();
 	         PreparedStatement pstmtCIN = conn.prepareStatement(fetchCIN)) {
 
-	        pstmtCIN.setString(1, username);
+	        pstmtCIN.setString(1, CIN);
 	        ResultSet rsCIN = pstmtCIN.executeQuery();
 	        if (rsCIN.next()) {
 	            String CIN = rsCIN.getString("CIN");
@@ -90,13 +90,13 @@ public class Mes_Reclammation extends JFrame {
 	                pstmtRecl.setString(1, CIN);
 	                ResultSet rsRecl = pstmtRecl.executeQuery();
 	                DefaultTableModel model = (DefaultTableModel) table.getModel();
-	                model.setRowCount(0); // Clear existing data
+	                model.setRowCount(0); 
 
 	                while (rsRecl.next()) {
-	                    String titre = rsRecl.getString("titre_rec");
-	                    int idSec = rsRecl.getInt("id_sec");
-	                    Date date = rsRecl.getDate("date_rec");
-	                    String sujet = rsRecl.getString("Sujet_rec");
+	                    String titre = rsRecl.getString("nom");
+	                    int idSec = rsRecl.getInt("idsec");
+	                    Date date = rsRecl.getDate("date_creation");
+	                    String sujet = rsRecl.getString("Description");
 	                    String secteur = "";
 	                    String status=rsRecl.getString("status");
 
