@@ -6,7 +6,7 @@ CREATE DATABASE projectjavaswing;
 USE projectjavaswing
 
 CREATE TABLE users (
-    idusers VARCHAR(10) PRIMARY KEY,
+    cin VARCHAR(10) PRIMARY KEY,
     username VARCHAR(39),
     nom VARCHAR(39),
     prenom VARCHAR(39),
