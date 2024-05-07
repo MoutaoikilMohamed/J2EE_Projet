@@ -20,6 +20,8 @@ public class ReclamationDetailsWindow extends JFrame {
     private String status;
     private String CIN;
 
+    private JTextArea detailsArea;
+
     public ReclamationDetailsWindow(int ID, String nom, String type, String localisation, Date date_creation, Date date_resolution, String description, String status, String CIN) {
         this.ID = ID;
         this.nom = nom;
@@ -31,33 +33,35 @@ public class ReclamationDetailsWindow extends JFrame {
         this.status = status;
         this.CIN = CIN;
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 450, 400);
+        setTitle(" Mon Profile");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 846, 482);
         contentPane = new JPanel();
-        contentPane.setBackground(Color.WHITE);
+        contentPane.setBackground(new Color(255, 255, 255));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
+        JLabel lblNewLabel = new JLabel("");
+        lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/image/back.PNG")));
+        lblNewLabel.setBounds(0, 0, 866, 82);
+        contentPane.add(lblNewLabel);
+
         JLabel lblDetails = new JLabel("Détails de la réclamation (ID: " + ID + ")");
         lblDetails.setHorizontalAlignment(SwingConstants.CENTER);
         lblDetails.setFont(new Font("Tahoma", Font.BOLD, 16));
-        lblDetails.setBounds(60, 11, 300, 30);
+        lblDetails.setBounds(242, 115, 300, 30);
         contentPane.add(lblDetails);
 
-        JTextArea detailsArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(219, 155, 360, 200);
+        contentPane.add(scrollPane);
+
+        detailsArea = new JTextArea();
         detailsArea.setEditable(false);
         detailsArea.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        detailsArea.append("Nom: " + nom + "\n");
-        detailsArea.append("Type: " + type + "\n");
-        detailsArea.append("Localisation: " + localisation + "\n");
-        detailsArea.append("Date de Réclamation: " + date_creation + "\n");
-        detailsArea.append("Description: " + description + "\n");
-        detailsArea.append("Status: " + status + "\n");
-        detailsArea.append("CIN: " + CIN + "\n");
-        JScrollPane scrollPane = new JScrollPane(detailsArea);
-        scrollPane.setBounds(40, 60, 360, 200);
-        contentPane.add(scrollPane);
+        updateDetails(); // Met à jour les détails initiaux
+        scrollPane.setViewportView(detailsArea);
 
         JButton btnRefuser = new JButton("Refuser");
         btnRefuser.setForeground(Color.WHITE);
@@ -67,10 +71,11 @@ public class ReclamationDetailsWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 updateReclamationStatus(ID, "Refusée");
                 btnRefuser.setEnabled(false);
+                updateDetails(); // Actualise les détails après la mise à jour du statut
                 dispose();
             }
         });
-        btnRefuser.setBounds(60, 280, 120, 30);
+        btnRefuser.setBounds(279, 365, 120, 30);
         contentPane.add(btnRefuser);
 
         JButton btnAccepter = new JButton("Accepter");
@@ -83,11 +88,18 @@ public class ReclamationDetailsWindow extends JFrame {
                 updateResolutionDate(ID, new Date());
                 btnRefuser.setEnabled(false);
                 btnAccepter.setEnabled(false);
+                updateDetails(); // Actualise les détails après la mise à jour du statut
                 dispose();
             }
         });
-        btnAccepter.setBounds(240, 280, 120, 30);
+        btnAccepter.setBounds(422, 365, 120, 30);
         contentPane.add(btnAccepter);
+
+        JComboBox motif = new JComboBox();
+        motif.setModel(new DefaultComboBoxModel(new String[]{"Motif de refus", "Documentation incomplète ou incorrecte", "Fraude ou fausse déclaration", "Responsabilité non prouvée", "Force majeure ou exclusion spécifique", "Responsabilité prouvée ", "Aucune exclusion spécifique ne s'applique", "Permession de démarche judicaire", "Autre"}));
+        motif.setToolTipText("");
+        motif.setBounds(314, 405, 200, 30);
+        contentPane.add(motif);
     }
 
     private void updateReclamationStatus(int id, String newStatus) {
@@ -150,5 +162,17 @@ public class ReclamationDetailsWindow extends JFrame {
                 ex.printStackTrace();
             }
         }
+    }
+
+    // Méthode pour mettre à jour les détails dans la zone de texte
+    private void updateDetails() {
+        detailsArea.setText(""); // Efface le contenu existant
+        detailsArea.append("Nom: " + nom + "\n");
+        detailsArea.append("Type: " + type + "\n");
+        detailsArea.append("Localisation: " + localisation + "\n");
+        detailsArea.append("Date de Réclamation: " + date_creation + "\n");
+        detailsArea.append("Description: " + description + "\n");
+        detailsArea.append("Status: " + status + "\n");
+        detailsArea.append("CIN: " + CIN + "\n");
     }
 }
