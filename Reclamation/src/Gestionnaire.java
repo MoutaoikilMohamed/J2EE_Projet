@@ -21,7 +21,7 @@ public class Gestionnaire extends JFrame {
     private String nom;
     private String prenom;
     private String username;
-    private String CIN;
+    private static String CIN;
     private Date date_naissance;
     private String province;
     private String Ntel;
@@ -33,7 +33,7 @@ public class Gestionnaire extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 		    public void run() {
 		        try {
-		            Gestionnaire frame = new Gestionnaire();
+		            Gestionnaire frame = new Gestionnaire(CIN);
 		            frame.setVisible(true);
 		        } catch (Exception e) {
 		            e.printStackTrace();
@@ -45,7 +45,7 @@ public class Gestionnaire extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Gestionnaire() {
+	public Gestionnaire( String CIN) {
     	setTitle(" Espace Gestionnaire");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,7 +130,7 @@ public class Gestionnaire extends JFrame {
 		JButton btnProfileGestionnaire = new JButton("Mon Profil");
 		btnProfileGestionnaire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProfileGestionnaire profilGestionnaire = new ProfileGestionnaire(idusers);
+				ProfileGestionnaire profilGestionnaire = new ProfileGestionnaire(username);
 				profilGestionnaire.setVisible(true);
 			}
 		});
@@ -161,7 +161,7 @@ public class Gestionnaire extends JFrame {
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/Gestionnaire.png")));
-		lblNewLabel_2.setBounds(425, 80, 86, 66);
+		lblNewLabel_2.setBounds(412, 80, 86, 66);
 		contentPane.add(lblNewLabel_2);
 	}
 
