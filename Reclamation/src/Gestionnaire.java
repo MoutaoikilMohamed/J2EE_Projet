@@ -75,7 +75,7 @@ public class Gestionnaire extends JFrame {
 		        accessReclamation.setVisible(true);
 		    }
 		});
-		btnNewButton_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/database (1).png")));
+		btnNewButton_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/rapport (1).png")));
 		btnNewButton_1_1.setBounds(579, 302, 213, 216);
 		contentPane.add(btnNewButton_1_1);
 		
