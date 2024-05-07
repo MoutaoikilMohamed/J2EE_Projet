@@ -26,7 +26,7 @@ public class ProfileGestionnaire extends JFrame {
     private JTextField dateNaissanceField;
     private JTextField cinField;
     private JTextField provinceField;
-    private JTextField ntellField;
+    private JTextField ntelField;
     private String CIN;
 
     /**
@@ -126,10 +126,10 @@ public class ProfileGestionnaire extends JFrame {
         provinceField.setBounds(287, 270, 207, 30);
         contentPane.add(provinceField);
 
-        ntellField = new JTextField();
-        ntellField.setColumns(10);
-        ntellField.setBounds(287, 311, 207, 30);
-        contentPane.add(ntellField);
+        ntelField = new JTextField();
+        ntelField.setColumns(10);
+        ntelField.setBounds(287, 311, 207, 30);
+        contentPane.add(ntelField);
 
         JButton btnValider = new JButton("Valider");
         btnValider.addActionListener(new ActionListener() {
@@ -160,7 +160,7 @@ public class ProfileGestionnaire extends JFrame {
                 dateNaissanceField.setText(rsUser.getDate("date_naissance").toString());
                 cinField.setText(rsUser.getString("CIN"));
                 provinceField.setText(rsUser.getString("province"));
-                ntellField.setText(rsUser.getString("Ntel"));
+                ntelField.setText(rsUser.getString("Ntel"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -175,7 +175,7 @@ public class ProfileGestionnaire extends JFrame {
             dateNaissanceField.getText().trim().isEmpty() ||
             cinField.getText().trim().isEmpty() ||
             provinceField.getText().trim().isEmpty() ||
-            ntellField.getText().trim().isEmpty()
+            ntelField.getText().trim().isEmpty()
         );
     }
 
@@ -189,7 +189,8 @@ public class ProfileGestionnaire extends JFrame {
             pstmt.setDate(3, Date.valueOf(dateNaissanceField.getText()));
             pstmt.setString(4, cinField.getText());
             pstmt.setString(5, provinceField.getText());
-            pstmt.setString(6, ntellField.getText());
+            pstmt.setString(6, ntelField.getText());
+            pstmt.setString(7, CIN);
 
             int updated = pstmt.executeUpdate();
             if (updated > 0) {
