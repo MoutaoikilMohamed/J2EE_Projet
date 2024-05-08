@@ -81,9 +81,9 @@ public class ReclamationDetailsWindow extends JFrame {
                     btnRefuser.setEnabled(false);
                     updateDetails(); // Actualise les détails après la mise à jour du statut
                     dispose();
-                    JOptionPane.showMessageDialog(contentPane, "Réclamation refusée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-                } else {
                     JOptionPane.showMessageDialog(contentPane, "Veuillez sélectionner un motif de refus.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                } else {
+                	JOptionPane.showMessageDialog(contentPane, "Réclamation refusée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
