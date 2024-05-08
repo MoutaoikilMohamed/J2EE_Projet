@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class ProfileGestionnaire extends JFrame {
 
@@ -23,7 +24,6 @@ public class ProfileGestionnaire extends JFrame {
 	private JPanel contentPane;
     private JTextField nomField;
     private JTextField prenomField;
-    private JTextField dateNaissanceField;
     private JTextField cinField;
     private JTextField provinceField;
     private JTextField ntelField;
@@ -52,6 +52,8 @@ public class ProfileGestionnaire extends JFrame {
     public ProfileGestionnaire(String CIN) {
         setTitle("Mon Profile");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+
         setBounds(100, 100, 846, 482);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
@@ -73,65 +75,61 @@ public class ProfileGestionnaire extends JFrame {
     private void initialize() {
         JLabel lblNom = new JLabel("Nom");
         lblNom.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblNom.setBounds(108, 125, 105, 24);
+        lblNom.setBounds(108, 164, 105, 24);
         contentPane.add(lblNom);
 
         nomField = new JTextField();
-        nomField.setBounds(287, 122, 207, 30);
+        nomField.setBounds(287, 158, 207, 30);
         contentPane.add(nomField);
         nomField.setColumns(10);
 
         JLabel lblPrenom = new JLabel("Prenom");
         lblPrenom.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblPrenom.setBounds(108, 164, 105, 24);
+        lblPrenom.setBounds(108, 202, 105, 24);
         contentPane.add(lblPrenom);
 
         JLabel lblDateNaissance = new JLabel("Date de naissance");
         lblDateNaissance.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblDateNaissance.setBounds(108, 203, 126, 24);
+        lblDateNaissance.setBounds(108, 238, 126, 24);
         contentPane.add(lblDateNaissance);
 
         JLabel lblCIN = new JLabel("CIN");
         lblCIN.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblCIN.setBounds(108, 238, 126, 24);
+        lblCIN.setBounds(108, 273, 126, 24);
         contentPane.add(lblCIN);
 
         JLabel lblProvince = new JLabel("Province");
         lblProvince.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblProvince.setBounds(108, 281, 105, 24);
+        lblProvince.setBounds(108, 308, 105, 24);
         contentPane.add(lblProvince);
 
         JLabel lblNtel = new JLabel("Numéro de telephone");
         lblNtel.setFont(new Font("Tahoma", Font.BOLD, 12));
-        lblNtel.setBounds(108, 316, 158, 24);
+        lblNtel.setBounds(108, 343, 158, 24);
         contentPane.add(lblNtel);
 
         prenomField = new JTextField();
         prenomField.setColumns(10);
-        prenomField.setBounds(287, 162, 207, 30);
+        prenomField.setBounds(287, 199, 207, 30);
         contentPane.add(prenomField);
-
-        dateNaissanceField = new JTextField();
-        dateNaissanceField.setColumns(10);
-        dateNaissanceField.setBounds(287, 200, 207, 30);
-        contentPane.add(dateNaissanceField);
 
         cinField = new JTextField();
         cinField.setColumns(10);
-        cinField.setBounds(287, 236, 207, 30);
+        cinField.setBounds(287, 271, 207, 30);
         contentPane.add(cinField);
 
         provinceField = new JTextField();
         provinceField.setColumns(10);
-        provinceField.setBounds(287, 270, 207, 30);
+        provinceField.setBounds(287, 306, 207, 30);
         contentPane.add(provinceField);
 
         ntelField = new JTextField();
         ntelField.setColumns(10);
-        ntelField.setBounds(287, 311, 207, 30);
+        ntelField.setBounds(287, 341, 207, 30);
         contentPane.add(ntelField);
 
         JButton btnValider = new JButton("Valider");
+        btnValider.setBackground(new Color(255, 128, 128));
         btnValider.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (validateFields()) {
@@ -141,9 +139,24 @@ public class ProfileGestionnaire extends JFrame {
                 }
             }
         });
-        btnValider.setForeground(Color.BLUE);
-        btnValider.setBounds(371, 412, 91, 23);
+        btnValider.setForeground(new Color(255, 255, 255));
+        btnValider.setBounds(304, 411, 158, 24);
         contentPane.add(btnValider);
+        
+        JLabel lblNewLabel_1 = new JLabel("Compte Personnel");
+        lblNewLabel_1.setForeground(new Color(0, 196, 0));
+        lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 17));
+        lblNewLabel_1.setBounds(589, 276, 231, 24);
+        contentPane.add(lblNewLabel_1);
+        
+        JLabel lblNewLabel_2 = new JLabel("");
+        lblNewLabel_2.setIcon(new ImageIcon(ProfileGestionnaire.class.getResource("/image/profile.png")));
+        lblNewLabel_2.setBounds(601, 134, 158, 142);
+        contentPane.add(lblNewLabel_2);
+        
+        JDateChooser DTN = new JDateChooser();
+        DTN.setBounds(287, 238, 207, 30);
+        contentPane.add(DTN);
     }
 
     public void afficher() {
@@ -157,7 +170,6 @@ public class ProfileGestionnaire extends JFrame {
             if (rsUser.next()) {
                 nomField.setText(rsUser.getString("nom"));
                 prenomField.setText(rsUser.getString("prenom"));
-                dateNaissanceField.setText(rsUser.getDate("date_naissance").toString());
                 cinField.setText(rsUser.getString("CIN"));
                 provinceField.setText(rsUser.getString("province"));
                 ntelField.setText(rsUser.getString("Ntel"));
@@ -172,7 +184,6 @@ public class ProfileGestionnaire extends JFrame {
         return !(
             nomField.getText().trim().isEmpty() ||
             prenomField.getText().trim().isEmpty() ||
-            dateNaissanceField.getText().trim().isEmpty() ||
             cinField.getText().trim().isEmpty() ||
             provinceField.getText().trim().isEmpty() ||
             ntelField.getText().trim().isEmpty()
@@ -186,7 +197,6 @@ public class ProfileGestionnaire extends JFrame {
 
             pstmt.setString(1, nomField.getText());
             pstmt.setString(2, prenomField.getText());
-            pstmt.setDate(3, Date.valueOf(dateNaissanceField.getText()));
             pstmt.setString(4, cinField.getText());
             pstmt.setString(5, provinceField.getText());
             pstmt.setString(6, ntelField.getText());
@@ -205,4 +215,4 @@ public class ProfileGestionnaire extends JFrame {
             JOptionPane.showMessageDialog(null, "Format de date invalide. Veuillez utiliser AAAA-MM-JJ.", "Format Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-}
+
