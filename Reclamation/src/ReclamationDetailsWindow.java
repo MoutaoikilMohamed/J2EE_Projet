@@ -36,9 +36,9 @@ public class ReclamationDetailsWindow extends JFrame {
         this.status = status;
         this.CIN = CIN;
         this.motif = motif;
-
-        setTitle("Mon Profile");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        setTitle("Détails de la réclamation (ID: " + ID + ")");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 846, 482);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
@@ -47,7 +47,7 @@ public class ReclamationDetailsWindow extends JFrame {
         contentPane.setLayout(null);
 
         JLabel lblNewLabel = new JLabel("");
-        lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/image/back.PNG")));
+        lblNewLabel.setIcon(new ImageIcon(ReclamationDetailsWindow.class.getResource("/image/back.PNG")));
         lblNewLabel.setBounds(0, 0, 866, 82);
         contentPane.add(lblNewLabel);
 
