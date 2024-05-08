@@ -48,22 +48,23 @@ public class Gestionnaire extends JFrame {
 	public Gestionnaire( String CIN) {
     	setTitle(" Espace Gestionnaire");
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 846, 440);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setBounds(100, 100, 844, 602);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		 contentPane.setLayout(null);
 		 JLabel lblNewLabel = new JLabel("");
 	        lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/image/back.PNG")));
-	        lblNewLabel.setBounds(-20, 0, 866, 82);
+	        lblNewLabel.setBounds(-32, 0, 866, 82);
 	        contentPane.add(lblNewLabel);
 		setContentPane(contentPane);
 		
 		JLabel lblNewLabel_1 = new JLabel("Espace Gestionnaire");
 		lblNewLabel_1.setForeground(new Color(0, 196, 0));
 		lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 17));
-		lblNewLabel_1.setBounds(350, 157, 231, 24);
+		lblNewLabel_1.setBounds(324, 184, 231, 24);
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnNewButton_1_1 = new JButton("");
@@ -76,7 +77,7 @@ public class Gestionnaire extends JFrame {
 		    }
 		});
 		btnNewButton_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/rapport (1).png")));
-		btnNewButton_1_1.setBounds(579, 302, 213, 216);
+		btnNewButton_1_1.setBounds(512, 287, 213, 231);
 		contentPane.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_1_1_1 = new JButton("");
@@ -91,41 +92,15 @@ public class Gestionnaire extends JFrame {
 		JButton btnNewButton_1_1_11 = new JButton("");
 		btnNewButton_1_1_11.setBackground(new Color(255, 183, 183));
 		btnNewButton_1_1_11.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/profile.png")));
-		btnNewButton_1_1_11.setBounds(311, 302, 208, 216);
+		btnNewButton_1_1_11.setBounds(129, 287, 208, 231);
 		contentPane.add(btnNewButton_1_1_11);
 		btnNewButton_1_1_11.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		     
-		        ProfileGestionnaire profileGestionnaire = new ProfileGestionnaire(idusers); 
+		        ProfileGestionnaire profileGestionnaire = new ProfileGestionnaire(CIN); 
 		        profileGestionnaire.setVisible(true); 
 		    }
 		});
-		
-		JButton btnNewButton_1_1_1_1 = new JButton("");
-		btnNewButton_1_1_1_1.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/Citoyens.png")));
-		btnNewButton_1_1_1_1.setBackground(new Color(255, 183, 183));
-		btnNewButton_1_1_1_1.setBounds(48, 302, 197, 216);
-		contentPane.add(btnNewButton_1_1_1_1);
-		btnNewButton_1_1_1_1.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		     
-		        ListeCitoyens listeCitoyen = new ListeCitoyens(); 
-		        listeCitoyen.setVisible(true); 
-		    }
-		});
-		
-		JButton btnNewButton = new JButton("Citoyens");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBackground(new Color(255, 183, 183));
-		btnNewButton.setFont(new Font("Sylfaen", Font.BOLD, 17));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ListeCitoyens listeCitoyens = new ListeCitoyens();
-				listeCitoyens.setVisible(true);
-			}
-		});
-		btnNewButton.setBounds(48, 521, 197, 29);
-		contentPane.add(btnNewButton);
 		
 		JButton btnProfileGestionnaire = new JButton("Mon Profil");
 		btnProfileGestionnaire.addActionListener(new ActionListener() {
@@ -137,7 +112,7 @@ public class Gestionnaire extends JFrame {
 		btnProfileGestionnaire.setBackground(new Color(255, 183, 183));
 		btnProfileGestionnaire.setForeground(new Color(255, 255, 255));
 		btnProfileGestionnaire.setFont(new Font("Sylfaen", Font.BOLD, 16));
-		btnProfileGestionnaire.setBounds(311, 522, 208, 29);
+		btnProfileGestionnaire.setBounds(129, 522, 208, 29);
 		contentPane.add(btnProfileGestionnaire);
 		
 		JButton btnRclamations = new JButton("Réclamations");
@@ -150,7 +125,7 @@ public class Gestionnaire extends JFrame {
 			}
 		});
 		btnRclamations.setFont(new Font("Sylfaen", Font.BOLD, 16));
-		btnRclamations.setBounds(579, 521, 213, 30);
+		btnRclamations.setBounds(512, 521, 213, 30);
 		contentPane.add(btnRclamations);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Interface d'exploration");
@@ -161,7 +136,7 @@ public class Gestionnaire extends JFrame {
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/Gestionnaire.png")));
-		lblNewLabel_2.setBounds(412, 80, 86, 66);
+		lblNewLabel_2.setBounds(366, 93, 113, 82);
 		contentPane.add(lblNewLabel_2);
 	}
 
