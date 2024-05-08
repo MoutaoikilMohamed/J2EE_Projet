@@ -143,7 +143,8 @@ public class AccessReclamation extends JFrame {
                             String status = resultSet.getString("status");
                             String cin = resultSet.getString("CIN");
 
-                            ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, description, status, cin);
+                            String motif = null;
+							ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, description, status, cin, motif);
                             detailsWindow.setVisible(true);
                         } else {
                             JOptionPane.showMessageDialog(contentPane, "Aucune réclamation trouvée pour l'ID spécifié.");
