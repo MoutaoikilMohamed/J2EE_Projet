@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -20,14 +19,13 @@ public class ReclamationDetailsWindow extends JFrame {
     private String description;
     private String status;
     private String CIN;
-    private JComboBox<String> motifComboBox; // Renommé motif en motifComboBox
+    private JComboBox<String> motifComboBox;
 
     private JTextArea detailsArea;
     private String motif;
+    private StatusUpdateListener statusUpdateListener;
 
     public ReclamationDetailsWindow(int ID, String nom, String type, String localisation, Date date_creation, Date date_resolution, String description, String status, String CIN, String motif) {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         this.ID = ID;
         this.nom = nom;
         this.type = type;
@@ -38,8 +36,6 @@ public class ReclamationDetailsWindow extends JFrame {
         this.status = status;
         this.CIN = CIN;
         this.motif = motif;
-        
-        retrieveReclamationDetailsFromDatabase();
 
         setTitle("Mon Profile");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,15 +78,12 @@ public class ReclamationDetailsWindow extends JFrame {
                     updateReclamationStatus(ID, "Refusée", motifSelectionne);
                     btnRefuser.setEnabled(false);
                     updateDetails(); // Actualise les détails après la mise à jour du statut
-                    dispose();
-                	JOptionPane.showMessageDialog(contentPane, "Réclamation refusée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
+                    JOptionPane.showMessageDialog(contentPane, "Réclamation refusée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(contentPane, "Veuillez sélectionner un motif de refus.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
         btnRefuser.setBounds(279, 365, 120, 30);
         contentPane.add(btnRefuser);
 
@@ -104,8 +97,7 @@ public class ReclamationDetailsWindow extends JFrame {
                 updateResolutionDate(ID, new Date());
                 btnRefuser.setEnabled(false);
                 btnAccepter.setEnabled(false);
-                updateDetails(); 
-                dispose();
+                updateDetails(); // Actualise les détails après la mise à jour du statut
                 JOptionPane.showMessageDialog(contentPane, "Réclamation acceptée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -122,42 +114,6 @@ public class ReclamationDetailsWindow extends JFrame {
         motifComboBox.setSelectedItem(motif);
     }
 
-    private void retrieveReclamationDetailsFromDatabase() {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = ConnectionDB.getConnection(); // Assurez-vous d'avoir la classe ConnectionDB pour établir une connexion à la base de données
-            String sql = "SELECT nom, type, localisation, date_creation, date_resolution, description, status, CIN, motif FROM Reclamation WHERE ID = ?";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, ID);
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                nom = resultSet.getString("nom");
-                type = resultSet.getString("type");
-                localisation = resultSet.getString("localisation");
-                date_creation = resultSet.getDate("date_creation");
-                date_resolution = resultSet.getDate("date_resolution");
-                description = resultSet.getString("description");
-                status = resultSet.getString("status");
-                CIN = resultSet.getString("CIN");
-                motif = resultSet.getString("motif");
-            } else {
-                JOptionPane.showMessageDialog(null, "Aucune réclamation trouvée avec l'ID : " + ID, "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
     private void updateReclamationStatus(int id, String newStatus, String motif) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -171,6 +127,9 @@ public class ReclamationDetailsWindow extends JFrame {
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Status de la réclamation " + id + " mis à jour à : " + newStatus);
+                if (statusUpdateListener != null) {
+                    statusUpdateListener.onStatusUpdated(id, newStatus);
+                }
             } else {
                 System.out.println("Aucune réclamation trouvée avec l'ID : " + id);
             }
@@ -221,8 +180,9 @@ public class ReclamationDetailsWindow extends JFrame {
         }
     }
 
+    // Mettez à jour les détails dans la zone de texte
     private void updateDetails() {
-        detailsArea.setText(""); 
+        detailsArea.setText(""); // Efface le contenu existant
         detailsArea.append("Nom: " + nom + "\n");
         detailsArea.append("Type: " + type + "\n");
         detailsArea.append("Localisation: " + localisation + "\n");
@@ -231,5 +191,9 @@ public class ReclamationDetailsWindow extends JFrame {
         detailsArea.append("Status: " + status + "\n");
         detailsArea.append("Motif de refus: " + motif + "\n");
         detailsArea.append("CIN: " + CIN + "\n");
+    }
+
+    public void setStatusUpdateListener(StatusUpdateListener listener) {
+        this.statusUpdateListener = listener;
     }
 }
