@@ -26,6 +26,8 @@ public class ReclamationDetailsWindow extends JFrame {
     private String motif;
 
     public ReclamationDetailsWindow(int ID, String nom, String type, String localisation, Date date_creation, Date date_resolution, String description, String status, String CIN, String motif) {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         this.ID = ID;
         this.nom = nom;
         this.type = type;
@@ -81,9 +83,10 @@ public class ReclamationDetailsWindow extends JFrame {
                     btnRefuser.setEnabled(false);
                     updateDetails(); // Actualise les détails après la mise à jour du statut
                     dispose();
-                    JOptionPane.showMessageDialog(contentPane, "Veuillez sélectionner un motif de refus.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                } else {
                 	JOptionPane.showMessageDialog(contentPane, "Réclamation refusée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+                } else {
+                    JOptionPane.showMessageDialog(contentPane, "Veuillez sélectionner un motif de refus.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -101,7 +104,7 @@ public class ReclamationDetailsWindow extends JFrame {
                 updateResolutionDate(ID, new Date());
                 btnRefuser.setEnabled(false);
                 btnAccepter.setEnabled(false);
-                updateDetails(); // Actualise les détails après la mise à jour du statut
+                updateDetails(); 
                 dispose();
                 JOptionPane.showMessageDialog(contentPane, "Réclamation acceptée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -218,9 +221,8 @@ public class ReclamationDetailsWindow extends JFrame {
         }
     }
 
-    // Mettez à jour les détails dans la zone de texte
     private void updateDetails() {
-        detailsArea.setText(""); // Efface le contenu existant
+        detailsArea.setText(""); 
         detailsArea.append("Nom: " + nom + "\n");
         detailsArea.append("Type: " + type + "\n");
         detailsArea.append("Localisation: " + localisation + "\n");
