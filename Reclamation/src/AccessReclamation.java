@@ -127,6 +127,7 @@ public class AccessReclamation extends JFrame implements StatusUpdateListener {
 
                             String motif = null;
                             ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, description, status, cin, motif);
+                            detailsWindow.setStatusUpdateListener(AccessReclamation.this); // Set the listener
                             detailsWindow.setVisible(true);
                         } else {
                             JOptionPane.showMessageDialog(contentPane, "Aucune réclamation trouvée pour l'ID spécifié.");
