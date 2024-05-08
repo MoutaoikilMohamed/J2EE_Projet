@@ -1,8 +1,10 @@
 import java.awt.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.sql.*;
+
 
 public class Login extends JFrame {
 
@@ -94,11 +96,11 @@ public class Login extends JFrame {
 
     private void processLogin() {
         if (checkEmptyFields()) {
-            JOptionPane.showMessageDialog(null, "Veuillez entrer votre CIN et votre mot de passe", "Missing Information", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter your CIN and your password", "Missing Information", JOptionPane.ERROR_MESSAGE);
         } else {
-            String CIN = cinField.getText();
+            String username = cinField.getText();
             String password = new String(passField.getPassword());
-            authenticateUser(CIN, password);
+            authenticateUser(username, password);
         }
     }
 
@@ -109,7 +111,7 @@ public class Login extends JFrame {
             ps.setString(1, CIN);
             ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
-                handleLoginResult(rs,CIN);
+                handleLoginResult(rs, CIN);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -119,20 +121,22 @@ public class Login extends JFrame {
 
     private void handleLoginResult(ResultSet rs, String CIN) throws SQLException {
         if (rs.next()) {
+           
                 String role = rs.getString("role");
                 switch (role) {
-                    case "Citoyen":
+                    case "citoyen":
                         openFrame(new Citoyens(CIN));
                         break;
-                    case "Gestionnaire":
-                        openFrame(new Gestionnaire(CIN));
+                    case "gestion":
+                        openFrame(new Gestionnaire());
                         break;
-                    case "Administrarteur":
+                    case "admin":
                         openFrame(new Administrateur());
                         break;
-            }
+                }
+             
         } else {
-            JOptionPane.showMessageDialog(null, "Aucun utilisateur n'existe avec ce nom d'utilisateur et ce mot de passe", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No user exists with this username and password", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
