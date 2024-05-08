@@ -81,11 +81,13 @@ public class ReclamationDetailsWindow extends JFrame {
                     btnRefuser.setEnabled(false);
                     updateDetails(); // Actualise les détails après la mise à jour du statut
                     dispose();
+                    JOptionPane.showMessageDialog(contentPane, "Réclamation refusée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Veuillez sélectionner un motif de refus.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(contentPane, "Veuillez sélectionner un motif de refus.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
         btnRefuser.setBounds(279, 365, 120, 30);
         contentPane.add(btnRefuser);
 
@@ -101,6 +103,7 @@ public class ReclamationDetailsWindow extends JFrame {
                 btnAccepter.setEnabled(false);
                 updateDetails(); // Actualise les détails après la mise à jour du statut
                 dispose();
+                JOptionPane.showMessageDialog(contentPane, "Réclamation acceptée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         btnAccepter.setBounds(422, 365, 120, 30);
