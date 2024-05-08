@@ -1,199 +1,171 @@
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.awt.event.ActionEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-
-public class AccessReclamation extends JFrame {
+public class Citoyens extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTable table;
+    private String CIN;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    AccessReclamation frame = new AccessReclamation();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Create the frame.
-     */
-    public AccessReclamation() {
+    public Citoyens(String CIN) {
+        this.CIN = CIN;  
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         setBounds(100, 100, 872, 675);
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(255, 255, 255));
+        contentPane.setBackground(Color.WHITE);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
         setContentPane(contentPane);
         contentPane.setLayout(null);
-
-        JLabel lblNewLabel = new JLabel("");
-        lblNewLabel.setBounds(-18, 0, 866, 82);
-        lblNewLabel.setIcon(new ImageIcon(AccessReclamation.class.getResource("/image/back.PNG")));
+        initializeComponents();
+        accesNomPrenom(CIN);
+    }
+    private void initializeComponents() {
+        JLabel lblNewLabel = new JLabel(new ImageIcon(Citoyens.class.getResource("/image/back.PNG")));
+        lblNewLabel.setBounds(0, 0, 881, 82);
         contentPane.add(lblNewLabel);
 
-        JLabel lblNewLabel_1_1 = new JLabel("Interface d'exploration");
-        lblNewLabel_1_1.setForeground(new Color(0, 147, 0));
-        lblNewLabel_1_1.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
-        lblNewLabel_1_1.setBounds(23, 103, 231, 24);
-        contentPane.add(lblNewLabel_1_1);
-
-        JLabel lblNewLabel_1 = new JLabel("Espace Gestionnaire");
-        lblNewLabel_1.setForeground(new Color(0, 196, 0));
-        lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 17));
-        lblNewLabel_1.setBounds(353, 169, 231, 24);
-        contentPane.add(lblNewLabel_1);
-
-        JLabel lblNewLabel_2 = new JLabel("");
-        lblNewLabel_2.setIcon(new ImageIcon(AccessReclamation.class.getResource("/image/Gestionnaire.png")));
-        lblNewLabel_2.setBounds(411, 93, 86, 66);
-        contentPane.add(lblNewLabel_2);
-
-        JLabel lblNewLabel_1_1_1 = new JLabel("Liste des reclamations");
-        lblNewLabel_1_1_1.setForeground(new Color(0, 0, 0));
-        lblNewLabel_1_1_1.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
-        lblNewLabel_1_1_1.setBounds(353, 203, 231, 24);
-        contentPane.add(lblNewLabel_1_1_1);
-
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(23, 272, 812, 171);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        contentPane.add(scrollPane);
-
-        table = new JTable();
-        scrollPane.setViewportView(table);
-        table.setModel(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{
-                    "ID", "Nom", "Type", "Localisation", "date création", "date résolution", "Status", "CIN"
-                }
-        ));
+        JLabel lblEspaceCitoyens = new JLabel("Espace Citoyens");
+        lblEspaceCitoyens.setForeground(new Color(0, 196, 0));
+        lblEspaceCitoyens.setFont(new Font("Sitka Small", Font.BOLD, 17));
+        lblEspaceCitoyens.setBounds(358, 153, 247, 30);
+        contentPane.add(lblEspaceCitoyens);
         
-        // Charger les données initiales dans la table
-        loadReclamationData();
+        
+       
 
-        JButton btnNewButton = new JButton("Vérifier la Réclamation");
-        btnNewButton.setForeground(new Color(255, 255, 255));
-        btnNewButton.setBackground(new Color(255, 128, 128));
-        btnNewButton.setFont(new Font("Sylfaen", Font.PLAIN, 13));
-        btnNewButton.setBounds(180, 460, 200, 31);
-        contentPane.add(btnNewButton);
+        JButton btnReclamations = new JButton(new ImageIcon(Citoyens.class.getResource("/image/ADD.png")));
+        btnReclamations.setBackground(new Color(255, 183, 183));
+        btnReclamations.addActionListener(e -> {
+            Reclammation reclammation = new Reclammation(CIN);
+            reclammation.setVisible(true);
+        });
+        btnReclamations.setBounds(48, 302, 213, 216);
+        contentPane.add(btnReclamations);
 
-        JTextField textField = new JTextField();
-        textField.setBounds(26, 460, 150, 31);
-        contentPane.add(textField);
+        JButton btnProfile = new JButton(new ImageIcon(Citoyens.class.getResource("/image/MyRec.png")));
+        btnProfile.setBackground(new Color(255, 183, 183));
+        btnProfile.addActionListener(e -> {
+        	
+        	 Mes_Reclammation reclammation = new Mes_Reclammation(CIN);
+             reclammation.setVisible(true);
+          
+        });
+        btnProfile.setBounds(311, 302, 208, 216);
+        contentPane.add(btnProfile);
 
-        btnNewButton.addActionListener(new ActionListener() {
+        JButton btnSettings = new JButton(new ImageIcon(Citoyens.class.getResource("/image/profil.png")));
+        btnSettings.setBackground(new Color(255, 183, 183));
+        btnSettings.addActionListener(e -> {
+        	 Mon_profile reclammation = new Mon_profile(CIN);
+             reclammation.setVisible(true);
+         
+        });
+        btnSettings.setBounds(579, 302, 208, 216);
+        contentPane.add(btnSettings);
+
+        JButton btnAddReclamation = new JButton("Ajout Reclamations");
+        btnAddReclamation.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String textFieldText = textField.getText();
-                    if (textFieldText.isEmpty()) {
-                        JOptionPane.showMessageDialog(contentPane, "Veuillez saisir un ID.");
-                        return;
-                    }
-
-                    int ID = Integer.parseInt(textFieldText);
-
-                    Connection conn = null;
-                    PreparedStatement statement = null;
-                    ResultSet resultSet = null;
-                    try {
-                        conn = ConnectionDB.getConnection();
-                        String sql = "SELECT * FROM reclamation WHERE ID = ?";
-                        statement = conn.prepareStatement(sql);
-                        statement.setInt(1, ID);
-                        resultSet = statement.executeQuery();
-
-                        if (resultSet.next()) {
-                            String nom = resultSet.getString("nom");
-                            String type = resultSet.getString("type");
-                            String localisation = resultSet.getString("localisation");
-                            Date dateCreation = resultSet.getDate("date_creation");
-                            Date dateResolution = resultSet.getDate("date_resolution");
-                            String description = resultSet.getString("Description");
-                            String status = resultSet.getString("status");
-                            String cin = resultSet.getString("CIN");
-
-                            String motif = null;
-							ReclamationDetailsWindow detailsWindow = new ReclamationDetailsWindow(ID, nom, type, localisation, dateCreation, dateResolution, description, status, cin, motif);
-                            detailsWindow.setVisible(true);
-                        } else {
-                            JOptionPane.showMessageDialog(contentPane, "Aucune réclamation trouvée pour l'ID spécifié.");
-                        }
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(contentPane, "Veuillez saisir un ID valide.");
-                    } finally {
-                        if (resultSet != null) resultSet.close();
-                        if (statement != null) statement.close();
-                        if (conn != null) conn.close();
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                Reclammation rec = new Reclammation(CIN);
+                rec.setVisible(true);
             }
         });
-    }
+        btnAddReclamation.setForeground(Color.WHITE);
+        btnAddReclamation.setBackground(new Color(255, 183, 183));
+        btnAddReclamation.setFont(new Font("Sylfaen", Font.BOLD, 17));
+        btnAddReclamation.setBounds(48, 521, 213, 29);
+        contentPane.add(btnAddReclamation);
 
-    // Méthode pour charger les données de réclamation dans la table
-    private void loadReclamationData() {
-        Connection conn = null;
-        try {
-            conn = ConnectionDB.getConnection();
+        JButton btnMyReclamations = new JButton("Mes Reclamations");
+        btnMyReclamations.addActionListener(e -> {
+            Mes_Reclammation mesReclammationWindow = new Mes_Reclammation(CIN);
+            mesReclammationWindow.setVisible(true);
+        });
 
-            String sql = "SELECT * FROM Reclamation";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
+        btnMyReclamations.setBackground(new Color(255, 183, 183));
+        btnMyReclamations.setForeground(Color.WHITE);
+        btnMyReclamations.setFont(new Font("Sylfaen", Font.BOLD, 16));
+        btnMyReclamations.setBounds(311, 522, 208, 29);
+        contentPane.add(btnMyReclamations);
 
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.setRowCount(0); // Effacer les données existantes dans le modèle
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("ID");
-                String nom = resultSet.getString("nom");
-                String type = resultSet.getString("type");
-                String localisation = resultSet.getString("localisation");
-                Date date_creation = resultSet.getDate("date_creation");
-                Date date_resolution = resultSet.getDate("date_resolution");
-                String description = resultSet.getString("description");
-                String status = resultSet.getString("status");
-                String CIN = resultSet.getString("CIN");
-
-                model.addRow(new Object[]{id, nom, type, localisation, date_creation, date_resolution, status, CIN});
+        JButton btnUserProfile = new JButton("Profile");
+        btnUserProfile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Mon_profile monprofile = new Mon_profile(CIN);
+                monprofile.setVisible(true);
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
-        } finally {
-            ConnectionDB.closeConnection(conn);
+        });
+        btnUserProfile.setForeground(Color.WHITE);
+        btnUserProfile.setBackground(new Color(255, 183, 183));
+        btnUserProfile.setFont(new Font("Sylfaen", Font.BOLD, 16));
+        btnUserProfile.setBounds(579, 521, 213, 30);
+        contentPane.add(btnUserProfile);
+        
+        JButton btnLogout = new JButton("Déconnexion");
+        btnLogout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                Login loginFrame = new Login();
+                loginFrame.setVisible(true);
+            }
+        });
+        btnLogout.setBounds(615, 157, 231, 24);
+        
+        btnLogout.setBackground(new Color(255, 183, 183));
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setFont(new Font("Sylfaen", Font.BOLD, 16));
+        
+        contentPane.add(btnLogout, BorderLayout.EAST);
+        
+     
+
+        
+    }
+    
+    public void accesNomPrenom(String CIN) {
+        try {
+            Connection connection = ConnectionDB.getConnection();
+            String sql = "SELECT nom, prenom FROM users WHERE cin=?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, CIN);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        String nom = resultSet.getString("nom");
+                        String prenom = resultSet.getString("prenom");
+                        String texteLabel = "Compte : " + prenom + " " + nom;
+
+                        JLabel lblProfile = new JLabel(texteLabel);
+                        lblProfile.setForeground(new Color(0, 147, 220));
+                        lblProfile.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
+                        lblProfile.setBounds(110, 103, 231, 24);
+                        contentPane.add(lblProfile);
+                    } else {
+                        System.out.println("Aucun utilisateur trouvé pour le CIN : " + CIN);
+                        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    }
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace(); 
         }
     }
+    public String getUsername() {
+        return CIN;
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            Citoyens frame = new Citoyens("testUser");
+            frame.setVisible(true);
+        });
+    }
+}
