@@ -47,6 +47,8 @@ public class AccessReclamation extends JFrame {
      */
     public AccessReclamation() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         setBounds(100, 100, 872, 675);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
@@ -195,4 +197,3 @@ public class AccessReclamation extends JFrame {
             ConnectionDB.closeConnection(conn);
         }
     }
-}
