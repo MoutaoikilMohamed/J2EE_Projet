@@ -14,13 +14,8 @@ import java.awt.Font;
 import com.toedter.components.JLocaleChooser;
 
 public class Administrateur extends JFrame {
-
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -34,34 +29,12 @@ public class Administrateur extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	 private void updateTime() {
-	        Thread thread = new Thread(() -> {
-	            while (true) {
-	                Calendar calendar = Calendar.getInstance();
-	                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-	                int minute = calendar.get(Calendar.MINUTE);
-	                int second = calendar.get(Calendar.SECOND);
-	                String currentTime = String.format("%02d:%02d:%02d", hour, minute, second);
-	                ((JLabel) getContentPane().getComponent(0)).setText(currentTime); 
-	                try {
-	                    Thread.sleep(1000); 
-	                } catch (InterruptedException ex) {
-	                    ex.printStackTrace();
-	                }
-	            }
-	        });
-	        thread.start();
-	    }
 	public Administrateur() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 1081, 675);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -149,7 +122,7 @@ public class Administrateur extends JFrame {
 		btnRclamations.setBounds(544, 521, 213, 30);
 		contentPane.add(btnRclamations);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Interface d'exploration");
+		JLabel lblNewLabel_1_1 = new JLabel("Interface principale");
 		lblNewLabel_1_1.setForeground(new Color(0, 147, 0));
 		lblNewLabel_1_1.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
 		lblNewLabel_1_1.setBounds(21, 93, 231, 24);
@@ -188,6 +161,26 @@ public class Administrateur extends JFrame {
 		lblNewLabel_3_1.setIcon(new ImageIcon(Administrateur.class.getResource("/image/back - Copie.PNG")));
 		lblNewLabel_3_1.setBounds(0, -11, 175, 89);
 		contentPane.add(lblNewLabel_3_1);
+		
+		JButton btnLogout = new JButton("");
+		btnLogout.setIcon(new ImageIcon(Administrateur.class.getResource("/image/se-deconnecter (1).png")));
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Sylfaen", Font.BOLD, 16));
+		btnLogout.setBackground(Color.WHITE);
+		btnLogout.setBounds(931, 78, 115, 53);
+		contentPane.add(btnLogout);
+		  btnLogout.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                dispose();
+	                Login loginFrame = new Login();
+	                loginFrame.setVisible(true);
+	            }
+	        });
+		JLabel lblDconnection = new JLabel("Déconnection");
+		lblDconnection.setForeground(Color.RED);
+		lblDconnection.setFont(new Font("Sitka Small", Font.BOLD, 17));
+		lblDconnection.setBounds(920, 140, 247, 30);
+		contentPane.add(lblDconnection);
 
 	}
 }
