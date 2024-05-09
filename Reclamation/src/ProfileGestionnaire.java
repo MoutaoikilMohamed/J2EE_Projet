@@ -1,7 +1,6 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import com.toedter.calendar.JDateChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -16,7 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class ProfileGestionnaire extends JFrame {
 
@@ -30,9 +31,6 @@ public class ProfileGestionnaire extends JFrame {
     private JTextField ntelField;
     private String CIN;
 
-    /**
-     * Launch the application.
-     */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -46,13 +44,12 @@ public class ProfileGestionnaire extends JFrame {
         });
     }
 
-    /**
-     * Create the frame.
-     * @param CIN 
-     */
     public ProfileGestionnaire(String CIN) {
-        setTitle("Mon Profile");
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+         setTitle("Mon Profile");
+        
         setBounds(100, 100, 846, 482);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
@@ -132,6 +129,7 @@ public class ProfileGestionnaire extends JFrame {
         contentPane.add(ntelField);
 
         JButton btnValider = new JButton("Valider");
+        btnValider.setBackground(new Color(255, 128, 128));
         btnValider.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (validateFields()) {
@@ -141,11 +139,22 @@ public class ProfileGestionnaire extends JFrame {
                 }
             }
         });
-        btnValider.setForeground(Color.BLUE);
-        btnValider.setBounds(371, 412, 91, 23);
+        btnValider.setForeground(new Color(255, 255, 255));
+        btnValider.setBounds(336, 405, 126, 30);
         contentPane.add(btnValider);
+    
+        
+        JLabel cmpt = new JLabel("Compte Personnel");
+        cmpt.setForeground(new Color(0, 196, 0));
+        cmpt.setFont(new Font("Sitka Small", Font.BOLD, 17));
+        cmpt.setBounds(589, 276, 231, 24);
+        contentPane.add(cmpt);
+        
+        JLabel PHOTO = new JLabel("");
+        PHOTO.setIcon(new ImageIcon(ProfileGestionnaire.class.getResource("/image/profile.png")));
+        PHOTO.setBounds(601, 134, 158, 142);
+        contentPane.add(PHOTO);
     }
-
     public void afficher() {
         String fetchUser = "SELECT nom, prenom, date_naissance, CIN, province, Ntel FROM users WHERE CIN = ?";
 
@@ -203,4 +212,3 @@ public class ProfileGestionnaire extends JFrame {
             JOptionPane.showMessageDialog(null, "Erreur lors de la mise à jour de la base de données: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-}
