@@ -124,12 +124,12 @@ public class Login extends JFrame {
                 String role = rs.getString("role");
                 switch (role) {
                     case "Citoyen":
-                        openFrame(new CitoyensHomePage(CIN));
-                        break;
+                    	   openFrame(new CitoyensHomePage(CIN));
+                    	   break;
                     case "Gestionnaire":
                         openFrame(new Gestionnaire(CIN));
                         break;
-                    case "Administrarteur":
+                    case "Administrateur":
                         openFrame(new Administrateur());
                         break;
             }
