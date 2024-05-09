@@ -43,15 +43,7 @@ public class Reclammation extends JFrame {
         spaceLabel.setBounds(356, 186, 250, 30);
         contentPane.add(spaceLabel);
 
-        JLabel localisationLabel = new JLabel("Votre localisation");
-        localisationLabel.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        localisationLabel.setBounds(115, 245, 168, 14);
-        contentPane.add(localisationLabel);
-
-        localisationField = new JTextField();
-        localisationField.setBounds(324, 245, 250, 20);
-        contentPane.add(localisationField);
-        localisationField.setColumns(10);
+     
 
         JLabel sectorLabel = new JLabel("Secteur de réclamation");
         sectorLabel.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
@@ -133,20 +125,20 @@ public class Reclammation extends JFrame {
         }
 
         String titre = titleField.getText();
-        int idSec = sectorComboBox.getSelectedIndex() + 1;
+        String type = (String) sectorComboBox.getSelectedItem();
+
         String sujet = descriptionTextArea.getText();
         String status = "En cours de traitement";
 
-        String query = "INSERT INTO Reclamation (nom, date_creation, idsec, Description, CIN, status, localisation) VALUES (?, NOW(), ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Reclamation (nom, date_creation, type, Descreption, CIN, status) VALUES (?, NOW(),  ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionDB.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, titre);
-            pstmt.setInt(2, idSec);
+            pstmt.setString(2, type);
             pstmt.setString(3, sujet);
             pstmt.setString(4, userCIN);
             pstmt.setString(5, status);
-            pstmt.setString(6, localisationField.getText());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
