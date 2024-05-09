@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -39,12 +41,7 @@ public class ListeCitoyens extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
-	private JTable table_1;
-	private JTable table_2;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -59,12 +56,9 @@ public class ListeCitoyens extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public ListeCitoyens() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 872, 675);
+        setBounds(100, 100, 884, 675);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,7 +68,7 @@ public class ListeCitoyens extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(-11, 0, 866, 82);
+		lblNewLabel.setBounds(0, 0, 879, 82);
 		lblNewLabel.setIcon(new ImageIcon(ListeCitoyens.class.getResource("/image/back.PNG")));
 		contentPane.add(lblNewLabel);
 		
@@ -101,20 +95,22 @@ public class ListeCitoyens extends JFrame {
 		lblNewLabel_1_1_1.setBounds(373, 219, 231, 24);
 		contentPane.add(lblNewLabel_1_1_1);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 254, 805, 228);
-		contentPane.add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-					"CIN", "Nom", "Prénom", "Date de naissance", "Province","Ntel"
-			}
-		));
-		
+		 JScrollPane scrollPane = new JScrollPane();
+	        scrollPane.setBounds(10, 254, 848, 228);
+	        contentPane.add(scrollPane);
+
+	        table = new JTable();
+	        scrollPane.setViewportView(table);
+	        table.setModel(new DefaultTableModel(
+	                new Object[][]{},
+	                new String[]{
+	                        "CIN", "Nom", "Prénom", "Date de naissance", "Province", "Ntel"
+	                }
+	        ));
+	        table.setRowHeight(table.getRowHeight() + 10);
+	        JTableHeader header = table.getTableHeader();
+	        header.setFont(header.getFont().deriveFont(Font.BOLD, 14)); 
+
 		JButton ExporterAll = new JButton("Exporter tout");
 		ExporterAll.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
 		ExporterAll.setBackground(new Color(255, 128, 128));
@@ -315,3 +311,6 @@ public class ListeCitoyens extends JFrame {
         }
     }
 }
+
+
+
