@@ -1,164 +1,212 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.EventQueue;
+import javax.swing.JTextField;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
 
-public class Mes_Reclammation extends JFrame {
+import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
+
+public class Mon_profile extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTable tableEnCours, tableAcceptees, tableRefusees;
-    private JScrollPane scrollPaneEnCours, scrollPaneAcceptees, scrollPaneRefusees;
+    private JTextField nomField;
+    private JTextField prenomField;
+    private JDateChooser dateNaissanceChooser;
+    private JTextField cinField;
+    private JTextField provinceField;
+    private JTextField ntelField;
     private String CIN;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                Mes_Reclammation window = new Mes_Reclammation("testUser");
-                window.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    ProfileGestionnaire frame = new ProfileGestionnaire("exampleCIN");
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
+    public Mon_profile(String CIN) {
+    	   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+           setTitle("Mon Profile");
+        setBounds(100, 100, 846, 482);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(255, 255, 255));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
 
-    public Mes_Reclammation(String CIN) {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.CIN = CIN;
+
+        JLabel backgroundLabel = new JLabel("");
+        backgroundLabel.setIcon(new ImageIcon(Login.class.getResource("/image/back.PNG")));
+        backgroundLabel.setBounds(-20, 0, 866, 82);
+        contentPane.add(backgroundLabel);
+
         initialize();
-        afficherReclamations();
+        afficher();
     }
 
     private void initialize() {
-        setTitle("Mes Réclamations");
-        setBounds(100, 100, 1084, 595);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        contentPane = new JPanel();
-        contentPane.setLayout(null);
-        contentPane.setBackground(Color.WHITE);
-        setContentPane(contentPane);
+        JLabel lblNom = new JLabel("Nom");
+        lblNom.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNom.setBounds(108, 125, 105, 24);
+        contentPane.add(lblNom);
 
-        JLabel lblNewLabel = new JLabel(new ImageIcon(getClass().getResource("/image/back.PNG")));
-        lblNewLabel.setBounds(72, -9, 872, 89);
-        contentPane.add(lblNewLabel);
+        nomField = new JTextField();
+        nomField.setBounds(287, 122, 207, 30);
+        contentPane.add(nomField);
+        nomField.setColumns(10);
 
-        JLabel lblNewLabel_1 = new JLabel(new ImageIcon(getClass().getResource("/image/Citoyen.PNG")));
-        lblNewLabel_1.setBounds(506, 91, 68, 59);
-        contentPane.add(lblNewLabel_1);
+        JLabel lblPrenom = new JLabel("Prenom");
+        lblPrenom.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblPrenom.setBounds(108, 164, 105, 24);
+        contentPane.add(lblPrenom);
 
-        JLabel lblNewLabel_2 = new JLabel("Liste des réclamations");
-        lblNewLabel_2.setForeground(new Color(0, 196, 0));
-        lblNewLabel_2.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 22));
-        lblNewLabel_2.setBounds(425, 161, 250, 30);
-        contentPane.add(lblNewLabel_2);
+        JLabel lblDateNaissance = new JLabel("Date de naissance");
+        lblDateNaissance.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblDateNaissance.setBounds(108, 203, 126, 24);
+        contentPane.add(lblDateNaissance);
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPane.setForeground(new Color(255, 128, 128));
-        tabbedPane.setFont(new Font("Sylfaen", Font.BOLD, 15));
-        tabbedPane.setBounds(10, 213, 1048, 309);
-        contentPane.add(tabbedPane);
+        dateNaissanceChooser = new JDateChooser();
+        dateNaissanceChooser.setBounds(287, 200, 207, 30);
+        contentPane.add(dateNaissanceChooser);
 
-        JPanel panelEnCours = new JPanel();
-        tabbedPane.addTab("En Cours", null, panelEnCours, null);
-        panelEnCours.setLayout(new BorderLayout(0, 0));
+        JLabel lblCIN = new JLabel("CIN");
+        lblCIN.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblCIN.setBounds(108, 238, 126, 24);
+        contentPane.add(lblCIN);
 
-        tableEnCours = new JTable();
-        tableEnCours.setModel(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"CIN", "Titre", "Type", "Date Création",  "Sujet de réclamation", "Status"}
-        ));
-        scrollPaneEnCours = new JScrollPane(tableEnCours);
-        panelEnCours.add(scrollPaneEnCours);
-        
-        tableEnCours.setRowHeight(tableEnCours.getRowHeight() + 10);
-        JTableHeader header = tableEnCours.getTableHeader();
-        header.setFont(header.getFont().deriveFont(Font.BOLD, 14)); 
-        
-        JPanel panelAcceptees = new JPanel();
-        tabbedPane.addTab("Acceptées", null, panelAcceptees, null);
-        panelAcceptees.setLayout(new BorderLayout(0, 0));
+        JLabel lblProvince = new JLabel("Province");
+        lblProvince.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblProvince.setBounds(108, 281, 105, 24);
+        contentPane.add(lblProvince);
 
-        tableAcceptees = new JTable();
-        tableAcceptees.setModel(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"CIN", "Titre", "Type", "Date Création", "Date de Résolution", "Sujet de réclamation", "Status","Motif"}
-        ));
-        tableAcceptees.setRowHeight(tableAcceptees.getRowHeight() + 10);
-        JTableHeader header2 = tableAcceptees.getTableHeader();
-        header2.setFont(header2.getFont().deriveFont(Font.BOLD, 14)); 
-        scrollPaneAcceptees = new JScrollPane(tableAcceptees);
-        panelAcceptees.add(scrollPaneAcceptees);
+        JLabel lblNtel = new JLabel("Numéro de telephone");
+        lblNtel.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNtel.setBounds(108, 316, 158, 24);
+        contentPane.add(lblNtel);
 
-        JPanel panelRefusees = new JPanel();
-        tabbedPane.addTab("Refusées", null, panelRefusees, null);
-        panelRefusees.setLayout(new BorderLayout(0, 0));
+        prenomField = new JTextField();
+        prenomField.setColumns(10);
+        prenomField.setBounds(287, 162, 207, 30);
+        contentPane.add(prenomField);
 
-        tableRefusees = new JTable();
-        tableRefusees.setModel(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"CIN", "Titre", "Type", "Date Création", "Sujet de réclamation", "Status","Motif"}
-        ));
-        scrollPaneRefusees = new JScrollPane(tableRefusees);
-        panelRefusees.add(scrollPaneRefusees);
-        tableRefusees.setRowHeight(tableRefusees.getRowHeight() + 10);
-        
-        JLabel lblNewLabel_3 = new JLabel(new ImageIcon(Mes_Reclammation.class.getResource("/image/back - Copie.PNG")));
-        lblNewLabel_3.setBounds(-43, -9, 1364, 89);
-        contentPane.add(lblNewLabel_3);
-        
-        JLabel lblNewLabel_3_1 = new JLabel(new ImageIcon(Mes_Reclammation.class.getResource("/image/back - Copie.PNG")));
-        lblNewLabel_3_1.setBounds(0, -9, 126, 89);
-        contentPane.add(lblNewLabel_3_1);
-        JTableHeader header1 = tableRefusees.getTableHeader();
-        header1.setFont(header1.getFont().deriveFont(Font.BOLD, 14)); 
-    }
+        cinField = new JTextField();
+        cinField.setColumns(10);
+        cinField.setBounds(287, 236, 207, 30);
+        contentPane.add(cinField);
 
-    public void afficherReclamations() {
-        String fetchReclamations = "SELECT nom, type, date_creation,date_resolution, Description, status,motif FROM Reclamation";
-        try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement pstmtRecl = conn.prepareStatement(fetchReclamations)) {
+        provinceField = new JTextField();
+        provinceField.setColumns(10);
+        provinceField.setBounds(287, 270, 207, 30);
+        contentPane.add(provinceField);
 
-            ResultSet rsRecl = pstmtRecl.executeQuery();
+        ntelField = new JTextField();
+        ntelField.setColumns(10);
+        ntelField.setBounds(287, 311, 207, 30);
+        contentPane.add(ntelField);
 
-            DefaultTableModel modelEnCours = (DefaultTableModel) tableEnCours.getModel();
-            DefaultTableModel modelAcceptees = (DefaultTableModel) tableAcceptees.getModel();
-            DefaultTableModel modelRefusees = (DefaultTableModel) tableRefusees.getModel();
-
-            modelEnCours.setRowCount(0);
-            modelAcceptees.setRowCount(0);
-            modelRefusees.setRowCount(0);
-
-            while (rsRecl.next()) {
-                String titre = rsRecl.getString("nom");
-                String type = rsRecl.getString("type");
-                Date date = rsRecl.getDate("date_creation");
-                Date date1 = rsRecl.getDate("date_resolution");
-                String sujet = rsRecl.getString("Description");
-                String status = rsRecl.getString("status");
-                String motif = rsRecl.getString("motif");
-
-                switch (status) {
-                    case "En cours de traitement":
-                        modelEnCours.addRow(new Object[]{CIN, titre, type, date, sujet, status});
-                        break;
-                    case "Acceptée":
-                        modelAcceptees.addRow(new Object[]{CIN, titre, type, date, date1, sujet, status,motif});
-                        break;
-                    case "Refusée":
-                        modelRefusees.addRow(new Object[]{CIN, titre, type, date, sujet, status,motif});
-                        break;
+        JButton btnValider = new JButton("Valider");
+        btnValider.setBackground(new Color(255, 128, 128));
+        btnValider.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (validateFields()) {
+                    updateUserProfile();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs correctement.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+        btnValider.setForeground(new Color(255, 255, 255));
+        btnValider.setBounds(312, 402, 158, 30);
+        contentPane.add(btnValider);
+    
+        
+        JLabel cmpt = new JLabel("Compte Personnel");
+        cmpt.setForeground(new Color(0, 196, 0));
+        cmpt.setFont(new Font("Sitka Small", Font.BOLD, 17));
+        cmpt.setBounds(589, 276, 231, 24);
+        contentPane.add(cmpt);
+        
+        JLabel PHOTO = new JLabel("");
+        PHOTO.setIcon(new ImageIcon(ProfileGestionnaire.class.getResource("/image/profile.png")));
+        PHOTO.setBounds(601, 134, 158, 142);
+        contentPane.add(PHOTO);
+    }
+    public void afficher() {
+        String fetchUser = "SELECT nom, prenom, date_naissance, CIN, province, Ntel FROM users WHERE CIN = ?";
+
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement pstmtUser = conn.prepareStatement(fetchUser)) {
+
+            pstmtUser.setString(1, CIN);
+            ResultSet rsUser = pstmtUser.executeQuery();
+            if (rsUser.next()) {
+                nomField.setText(rsUser.getString("nom"));
+                prenomField.setText(rsUser.getString("prenom"));
+                dateNaissanceChooser.setDate(rsUser.getDate("date_naissance"));
+                cinField.setText(rsUser.getString("CIN"));
+                provinceField.setText(rsUser.getString("province"));
+                ntelField.setText(rsUser.getString("Ntel"));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error accessing the database: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'accès à la base de données: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean validateFields() {
+        return !(
+            nomField.getText().trim().isEmpty() ||
+            prenomField.getText().trim().isEmpty() ||
+            dateNaissanceChooser.getDate() == null ||
+            cinField.getText().trim().isEmpty() ||
+            provinceField.getText().trim().isEmpty() ||
+            ntelField.getText().trim().isEmpty()
+        );
+    }
+
+    private void updateUserProfile() {
+        String updateSql = "UPDATE users SET nom=?, prenom=?, date_naissance=?, CIN=?, province=?, Ntel=? WHERE CIN=?";
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(updateSql)) {
+
+            pstmt.setString(1, nomField.getText());
+            pstmt.setString(2, prenomField.getText());
+            pstmt.setDate(3, new java.sql.Date(dateNaissanceChooser.getDate().getTime()));
+            pstmt.setString(4, cinField.getText());
+            pstmt.setString(5, provinceField.getText());
+            pstmt.setString(6, ntelField.getText());
+            pstmt.setString(7, CIN);
+
+            int updated = pstmt.executeUpdate();
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(null, "Mise à jour du profil réussie!", "Update Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Échec de la mise à jour du profil. Veuillez réessayer.", "Update Failure", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erreur lors de la mise à jour de la base de données: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
