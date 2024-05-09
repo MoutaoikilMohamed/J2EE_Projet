@@ -17,18 +17,8 @@ public class Gestionnaire extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private String idusers;
-    private String nom;
-    private String prenom;
-    private String username;
     private static String CIN;
-    private Date date_naissance;
-    private String province;
-    private String Ntel;
-
-	/**
-	 * Launch the application.
-	 */
+ 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 		    public void run() {
@@ -42,9 +32,6 @@ public class Gestionnaire extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Gestionnaire( String CIN) {
     	setTitle(" Espace Gestionnaire");
 
@@ -61,10 +48,10 @@ public class Gestionnaire extends JFrame {
 	        contentPane.add(lblNewLabel);
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel_1 = new JLabel("Espace Gestionnaire");
+		JLabel lblNewLabel_1 = new JLabel("Espace Agent administrative");
 		lblNewLabel_1.setForeground(new Color(0, 196, 0));
-		lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 17));
-		lblNewLabel_1.setBounds(324, 184, 231, 24);
+		lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD, 21));
+		lblNewLabel_1.setBounds(281, 232, 341, 24);
 		contentPane.add(lblNewLabel_1);
 		
 		JButton btnNewButton_1_1 = new JButton("");
@@ -72,7 +59,7 @@ public class Gestionnaire extends JFrame {
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		     
-		    	AccessReclamation accessReclamation = new AccessReclamation();
+		    	AccessReclamation accessReclamation = new AccessReclamation(CIN);
 		        accessReclamation.setVisible(true);
 		    }
 		});
@@ -84,14 +71,14 @@ public class Gestionnaire extends JFrame {
 		btnNewButton_1_1_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		     
-		    	AccessReclamation accessReclamation = new AccessReclamation();
+		    	AccessReclamation accessReclamation = new AccessReclamation(CIN);
 				accessReclamation.setVisible(true);
 		    }
 		});
 	
 		JButton btnNewButton_1_1_11 = new JButton("");
 		btnNewButton_1_1_11.setBackground(new Color(255, 183, 183));
-		btnNewButton_1_1_11.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/profile.png")));
+		btnNewButton_1_1_11.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/carte-didentite.png")));
 		btnNewButton_1_1_11.setBounds(129, 287, 208, 231);
 		contentPane.add(btnNewButton_1_1_11);
 		btnNewButton_1_1_11.addActionListener(new ActionListener() {
@@ -105,7 +92,7 @@ public class Gestionnaire extends JFrame {
 		JButton btnProfileGestionnaire = new JButton("Mon Profil");
 		btnProfileGestionnaire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProfileGestionnaire profilGestionnaire = new ProfileGestionnaire(username);
+				ProfileGestionnaire profilGestionnaire = new ProfileGestionnaire(CIN);
 				profilGestionnaire.setVisible(true);
 			}
 		});
@@ -120,7 +107,7 @@ public class Gestionnaire extends JFrame {
 		btnRclamations.setBackground(new Color(255, 183, 183));
 		btnRclamations.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AccessReclamation accessReclamation = new AccessReclamation();
+				AccessReclamation accessReclamation = new AccessReclamation(CIN);
 				accessReclamation.setVisible(true);
 			}
 		});
@@ -128,16 +115,37 @@ public class Gestionnaire extends JFrame {
 		btnRclamations.setBounds(512, 521, 213, 30);
 		contentPane.add(btnRclamations);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Interface d'exploration");
+		JLabel lblNewLabel_1_1 = new JLabel("Interface principale");
 		lblNewLabel_1_1.setForeground(new Color(0, 147, 0));
 		lblNewLabel_1_1.setFont(new Font("Simplified Arabic", Font.BOLD, 18));
-		lblNewLabel_1_1.setBounds(21, 93, 231, 24);
+		lblNewLabel_1_1.setBounds(22, 104, 231, 24);
 		contentPane.add(lblNewLabel_1_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/Gestionnaire.png")));
-		lblNewLabel_2.setBounds(366, 93, 113, 82);
+		lblNewLabel_2.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/profile.png")));
+		lblNewLabel_2.setBounds(366, 79, 145, 128);
 		contentPane.add(lblNewLabel_2);
+		
+		JButton btnLogout = new JButton("");
+		btnLogout.setIcon(new ImageIcon(Gestionnaire.class.getResource("/image/se-deconnecter (1).png")));
+		btnLogout.setForeground(Color.WHITE);
+		btnLogout.setFont(new Font("Sylfaen", Font.BOLD, 16));
+		btnLogout.setBackground(Color.WHITE);
+		btnLogout.setBounds(700, 84, 115, 53);
+		contentPane.add(btnLogout);
+		  btnLogout.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                dispose();
+	                Login loginFrame = new Login();
+	                loginFrame.setVisible(true);
+	            }
+	        });
+		
+		JLabel lblDconnection = new JLabel("Déconnection");
+		lblDconnection.setForeground(Color.RED);
+		lblDconnection.setFont(new Font("Sitka Small", Font.BOLD, 17));
+		lblDconnection.setBounds(689, 146, 247, 30);
+		contentPane.add(lblDconnection);
 	}
 
 }
