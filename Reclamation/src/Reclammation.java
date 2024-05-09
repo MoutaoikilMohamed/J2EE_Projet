@@ -1,165 +1,147 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Reclammation extends JFrame {
+public class Mes_Reclammation extends JFrame {
+
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTextField localisationField;
-    private JTextField titleField;
-    private JComboBox<String> sectorComboBox;
-    private TextArea descriptionTextArea;
-    private JButton sendButton;
-    private String userCIN;
-
-    public Reclammation(String CIN) {
-        setTitle("Réclamation");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 781, 600);
-        contentPane = new JPanel();
-        contentPane.setBackground(Color.WHITE);
-        contentPane.setLayout(null);
-        setContentPane(contentPane);
-
-        initializeComponents();
-        fetchUserCIN(CIN);
-        loadSectorsFromDatabase();
-    }
-
-    private void initializeComponents() {
-        JLabel backgroundLabel = new JLabel(new ImageIcon(Reclammation.class.getResource("/image/back.PNG")));
-        backgroundLabel.setBounds(10, 0, 854, 89);
-        contentPane.add(backgroundLabel);
-
-        JLabel citizenLabel = new JLabel(new ImageIcon(Reclammation.class.getResource("/image/Citoyen.PNG")));
-        citizenLabel.setBounds(432, 116, 68, 59);
-        contentPane.add(citizenLabel);
-
-        JLabel spaceLabel = new JLabel("Espace Citoyen");
-        spaceLabel.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 22));
-        spaceLabel.setBounds(356, 186, 250, 30);
-        contentPane.add(spaceLabel);
-
-     
-
-        JLabel sectorLabel = new JLabel("Secteur de réclamation");
-        sectorLabel.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        sectorLabel.setBounds(115, 297, 168, 14);
-        contentPane.add(sectorLabel);
-
-        sectorComboBox = new JComboBox<>();
-        sectorComboBox.setBounds(324, 293, 250, 22);
-        contentPane.add(sectorComboBox);
-
-        JLabel titleLabel = new JLabel("Titre de réclamation");
-        titleLabel.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        titleLabel.setBounds(115, 272, 168, 14);
-        contentPane.add(titleLabel);
-
-        titleField = new JTextField(); // Fixed variable declaration
-        titleField.setBounds(324, 270, 250, 20);
-        contentPane.add(titleField);
-        titleField.setColumns(10);
-
-        JLabel descriptionLabel = new JLabel("Sujet de réclamation");
-        descriptionLabel.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        descriptionLabel.setBounds(115, 322, 168, 14);
-        contentPane.add(descriptionLabel);
-
-        descriptionTextArea = new TextArea();
-        descriptionTextArea.setBounds(125, 342, 447, 160);
-        contentPane.add(descriptionTextArea);
-
-        sendButton = new JButton("Envoyer");
-        sendButton.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
-        sendButton.setBounds(324, 510, 148, 25);
-        contentPane.add(sendButton);
-        sendButton.addActionListener(e -> insertReclamation());
-    }
-
-    private void fetchUserCIN(String CIN) {
-        if (CIN == null || CIN.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nom d'utilisateur non fourni.", "Erreur de Paramètre", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String fetchCIN = "SELECT CIN FROM users WHERE CIN=?";
-
-        try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement pstmtCIN = conn.prepareStatement(fetchCIN)) {
-            pstmtCIN.setString(1, CIN);
-            try (ResultSet rsCIN = pstmtCIN.executeQuery()) {
-                if (rsCIN.next()) {
-                    this.userCIN = rsCIN.getString("CIN");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Aucun utilisateur trouvé avec ce nom d'utilisateur.", "Utilisateur non trouvé", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erreur de base de données : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
-    private void loadSectorsFromDatabase() {
-        String query = "SELECT secteur FROM secteur_rec";
-        try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                sectorComboBox.addItem(rs.getString("secteur"));
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erreur de base de données : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
-    private void insertReclamation() {
-        if (sectorComboBox.getSelectedIndex() == -1) {
-            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un secteur avant de soumettre.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String titre = titleField.getText();
-        String type = (String) sectorComboBox.getSelectedItem();
-
-        String sujet = descriptionTextArea.getText();
-        String status = "En cours de traitement";
-
-        String query = "INSERT INTO Reclamation (nom, date_creation, type, Descreption, CIN, status) VALUES (?, NOW(),  ?, ?, ?, ?)";
-
-        try (Connection conn = ConnectionDB.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, titre);
-            pstmt.setString(2, type);
-            pstmt.setString(3, sujet);
-            pstmt.setString(4, userCIN);
-            pstmt.setString(5, status);
-
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                JOptionPane.showMessageDialog(this, "Réclamation ajoutée avec succès !");
-            } else {
-                JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout de la réclamation.");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Erreur de base de données : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
+    private JTable tableEnCours, tableAcceptees, tableRefusees;
+    private JScrollPane scrollPaneEnCours, scrollPaneAcceptees, scrollPaneRefusees;
+    private String CIN;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> {
             try {
-                Reclammation frame = new Reclammation("Test");
-                frame.setVisible(true);
+                Mes_Reclammation window = new Mes_Reclammation("testUser");
+                window.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    public Mes_Reclammation(String CIN) {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.CIN = CIN;
+        initialize();
+        afficherReclamations();
+    }
+
+    private void initialize() {
+        setTitle("Mes Réclamations");
+        setBounds(100, 100, 865, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        contentPane = new JPanel();
+        contentPane.setLayout(null);
+        contentPane.setBackground(Color.WHITE);
+        setContentPane(contentPane);
+
+        JLabel lblNewLabel = new JLabel(new ImageIcon(getClass().getResource("/image/back.PNG")));
+        lblNewLabel.setBounds(10, 0, 839, 89);
+        contentPane.add(lblNewLabel);
+
+        JLabel lblNewLabel_1 = new JLabel(new ImageIcon(getClass().getResource("/image/Citoyen.PNG")));
+        lblNewLabel_1.setBounds(420, 116, 68, 59);
+        contentPane.add(lblNewLabel_1);
+
+        JLabel lblNewLabel_2 = new JLabel("Espace Citoyen");
+        lblNewLabel_2.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 22));
+        lblNewLabel_2.setBounds(352, 186, 250, 30);
+        contentPane.add(lblNewLabel_2);
+
+        JLabel lblNewLabel_3 = new JLabel("Mes réclamations");
+        lblNewLabel_3.setFont(new Font("Yu Gothic UI", Font.BOLD, 12));
+        lblNewLabel_3.setBounds(90, 230, 168, 14);
+        contentPane.add(lblNewLabel_3);
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane.setBounds(20, 250, 800, 200);
+        contentPane.add(tabbedPane);
+
+        JPanel panelEnCours = new JPanel();
+        tabbedPane.addTab("En Cours", null, panelEnCours, null);
+        panelEnCours.setLayout(new BorderLayout(0, 0));
+
+        tableEnCours = new JTable();
+        tableEnCours.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"CIN", "Titre", "Type", "Date Création",  "Sujet de réclamation", "Status"}
+        ));
+        scrollPaneEnCours = new JScrollPane(tableEnCours);
+        panelEnCours.add(scrollPaneEnCours);
+
+        JPanel panelAcceptees = new JPanel();
+        tabbedPane.addTab("Acceptées", null, panelAcceptees, null);
+        panelAcceptees.setLayout(new BorderLayout(0, 0));
+
+        tableAcceptees = new JTable();
+        tableAcceptees.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"CIN", "Titre", "Type", "Date Création", "Date de Résolution", "Sujet de réclamation", "Status","Motif"}
+        ));
+        scrollPaneAcceptees = new JScrollPane(tableAcceptees);
+        panelAcceptees.add(scrollPaneAcceptees);
+
+        JPanel panelRefusees = new JPanel();
+        tabbedPane.addTab("Refusées", null, panelRefusees, null);
+        panelRefusees.setLayout(new BorderLayout(0, 0));
+
+        tableRefusees = new JTable();
+        tableRefusees.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"CIN", "Titre", "Type", "Date Création", "Sujet de réclamation", "Status","Motif"}
+        ));
+        scrollPaneRefusees = new JScrollPane(tableRefusees);
+        panelRefusees.add(scrollPaneRefusees);
+    }
+
+    public void afficherReclamations() {
+        String fetchReclamations = "SELECT nom, type, date_creation,date_resolution, Descreption, status,motif FROM Reclamation WHERE CIN=?";
+        try (Connection conn = ConnectionDB.getConnection();
+             PreparedStatement pstmtRecl = conn.prepareStatement(fetchReclamations)) {
+
+            pstmtRecl.setString(1, CIN);
+            ResultSet rsRecl = pstmtRecl.executeQuery();
+
+            DefaultTableModel modelEnCours = (DefaultTableModel) tableEnCours.getModel();
+            DefaultTableModel modelAcceptees = (DefaultTableModel) tableAcceptees.getModel();
+            DefaultTableModel modelRefusees = (DefaultTableModel) tableRefusees.getModel();
+
+            modelEnCours.setRowCount(0);
+            modelAcceptees.setRowCount(0);
+            modelRefusees.setRowCount(0);
+
+            while (rsRecl.next()) {
+                String titre = rsRecl.getString("nom");
+                String type = rsRecl.getString("type");
+                Date date = rsRecl.getDate("date_creation");
+                Date date1 = rsRecl.getDate("date_resolution");
+                String sujet = rsRecl.getString("Descreption");
+                String status = rsRecl.getString("status");
+                String motif = rsRecl.getString("motif");
+
+                switch (status) {
+                    case "En cours de traitement":
+                        modelEnCours.addRow(new Object[]{CIN, titre, type, date, sujet, status});
+                        break;
+                    case "Acceptée":
+                        modelAcceptees.addRow(new Object[]{CIN, titre, type, date, date1, sujet, status,motif});
+                        break;
+                    case "Refusée":
+                        modelRefusees.addRow(new Object[]{CIN, titre, type, date, sujet, status,motif});
+                        break;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error accessing the database: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
